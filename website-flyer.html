@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stryvon.AI - Web Solutions Flyer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #e8eaef;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .flyer {
+            width: 8.5in;
+            min-height: 11in;
+            height: auto;
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 24px 48px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top: purple → violet gradient */
+        .flyer-top {
+            background: linear-gradient(145deg, #4c1d95 0%, #6d28d9 50%, #7c3aed 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            padding: 1.5rem 1.75rem;
+            flex: 0 0 auto;
+        }
+
+        .flyer-top::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 65%);
+            border-radius: 50%;
+        }
+
+        .logo-section {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.9rem;
+        }
+
+        .logo-svg {
+            height: 46px;
+            width: auto;
+            color: currentColor;
+            margin-bottom: 0.35rem;
+        }
+
+        .tagline {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.92);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 500;
+        }
+
+        .cover-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            line-height: 1.28;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-subheadline {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.5;
+            margin-bottom: 0.6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-tagline {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-features {
+            list-style: none;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem 1rem;
+        }
+
+        .cover-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.96);
+            font-weight: 500;
+        }
+
+        .cover-features i {
+            color: #c4b5fd;
+            font-size: 0.95rem;
+        }
+
+        .cta-row {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 0.85rem;
+        }
+
+        .flyer-top .cta-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 0.55rem 1.1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* Bottom: premium paper tone */
+        .flyer-bottom {
+            background: #fafbfc;
+            color: #0f172a;
+            padding: 1.25rem 1.75rem;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #4c1d95;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            background: linear-gradient(90deg, #f5f3ff 0%, #ede9fe 100%);
+            border-left: 4px solid #7c3aed;
+            border-radius: 0 8px 8px 0;
+            letter-spacing: -0.01em;
+        }
+
+        /* Why Choose - feature cards */
+        .why-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .why-card {
+            background: #fff;
+            border: 1px solid #e9e5ff;
+            border-radius: 10px;
+            padding: 0.75rem 0.6rem;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.06);
+            text-align: center;
+        }
+
+        .why-card i {
+            color: #7c3aed;
+            font-size: 1.25rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .why-card strong {
+            display: block;
+            font-size: 0.85rem;
+            color: #1e1b4b;
+            margin-bottom: 0.2rem;
+        }
+
+        .why-card span {
+            font-size: 0.75rem;
+            color: #64748b;
+            line-height: 1.35;
+        }
+
+        /* Pricing cards - 3 in a row */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card {
+            background: #fff;
+            border: 1px solid #e9e5ff;
+            border-radius: 10px;
+            padding: 1rem 0.9rem;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.06);
+            position: relative;
+        }
+
+        .pricing-card.starter { border-top: 3px solid #22c55e; }
+        .pricing-card.professional { border-top: 3px solid #3b82f6; }
+        .pricing-card.premium { border-top: 3px solid #7c3aed; }
+
+        .pricing-badge {
+            position: absolute;
+            top: -0.4rem;
+            right: 0.6rem;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(34, 197, 94, 0.3);
+        }
+
+        .pricing-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin-bottom: 0.2rem;
+        }
+
+        .pricing-price {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #4c1d95;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-delivery {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pricing-card li {
+            font-size: 0.72rem;
+            color: #475569;
+            margin-bottom: 0.2rem;
+            padding-left: 0.9rem;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .pricing-card li::before {
+            content: '•';
+            color: #7c3aed;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .pricing-note {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* Add-ons & Maintenance - two columns */
+        .extras-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .addons-card, .maintenance-card {
+            background: #fff;
+            border: 1px solid #e9e5ff;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.06);
+        }
+
+        .addons-card h3, .maintenance-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #4c1d95;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .addons-card h3 i, .maintenance-card h3 i {
+            color: #7c3aed;
+        }
+
+        .addons-list, .maintenance-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .addons-list li, .maintenance-list li {
+            font-size: 0.8rem;
+            color: #475569;
+            margin-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .maintenance-list li {
+            margin-bottom: 0.35rem;
+        }
+
+        .maintenance-list .m-price {
+            font-weight: 600;
+            color: #4c1d95;
+        }
+
+        .maintenance-note {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 0.4rem;
+        }
+
+        /* Bottom CTA bar */
+        .contact-section {
+            background: linear-gradient(145deg, #4c1d95 0%, #6d28d9 100%);
+            color: white;
+            padding: 1rem 1.4rem;
+            border-radius: 10px;
+            margin-top: 0.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(76, 29, 149, 0.25);
+        }
+
+        .contact-section h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .contact-row {
+            display: grid;
+            grid-template-columns: 1.5fr 0.85fr 0.85fr;
+            gap: 0.75rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.9rem;
+        }
+
+        .contact-item:first-child {
+            white-space: nowrap;
+        }
+
+        .contact-item i {
+            color: #c4b5fd;
+            width: 16px;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .powered-by {
+            text-align: center;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.5rem;
+        }
+
+        @media screen and (max-width: 900px) {
+            .flyer {
+                transform: scale(0.85);
+                transform-origin: top center;
+            }
+        }
+
+        @media screen and (max-width: 700px) {
+            .flyer {
+                transform: scale(0.6);
+            }
+            .why-cards { grid-template-columns: 1fr 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .extras-grid { grid-template-columns: 1fr; }
+            .contact-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="flyer">
+        <div class="flyer-top">
+            <div class="logo-section">
+                <svg class="logo-svg" viewBox="0 0 170 36" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="flyerLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:currentColor;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:currentColor;stop-opacity:0.9" />
+                        </linearGradient>
+                    </defs>
+                    <g>
+                        <path d="M 6 10 Q 6 6, 10 6 Q 12 6, 13 8 Q 14 10, 13 12 Q 12 13, 10 13 Q 8 13, 7 14 Q 6 16, 7 18 Q 8 19, 10 19 Q 12 19, 13 21 Q 14 23, 13 25 Q 12 27, 10 27 Q 6 27, 6 23" fill="none" stroke="url(#flyerLogoGrad)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+                        <circle cx="18" cy="10" r="2" fill="url(#flyerLogoGrad)" opacity="0.9"/>
+                        <circle cx="20" cy="18" r="1.5" fill="url(#flyerLogoGrad)" opacity="0.7"/>
+                        <circle cx="18" cy="26" r="2" fill="url(#flyerLogoGrad)" opacity="0.9"/>
+                        <line x1="16" y1="12" x2="18" y2="10" stroke="url(#flyerLogoGrad)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                        <line x1="16" y1="24" x2="18" y2="26" stroke="url(#flyerLogoGrad)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                    </g>
+                    <text x="30" y="24" font-family="Plus Jakarta Sans, sans-serif" font-size="20" font-weight="700" letter-spacing="0.5" fill="currentColor">stryvon.ai</text>
+                </svg>
+                <div class="tagline">Web Solutions</div>
+            </div>
+            <h1 class="cover-headline">Stryvon.AI Web Solutions</h1>
+            <p class="cover-subheadline">AI-Powered Business Websites for UAE Companies</p>
+            <p class="cover-tagline">Launch your professional website in just 48 hours</p>
+            <ul class="cover-features">
+                <li><i class="fas fa-check-circle"></i> Modern</li>
+                <li><i class="fas fa-check-circle"></i> Mobile-First</li>
+                <li><i class="fas fa-check-circle"></i> SEO-Ready</li>
+                <li><i class="fas fa-check-circle"></i> WhatsApp Integrated</li>
+            </ul>
+            <div class="cta-row">
+                <a href="https://www.stryvon.ai" class="cta-button">Get Started</a>
+                <a href="https://www.stryvon.ai/#contact" class="cta-button">Contact Us</a>
+            </div>
+        </div>
+
+        <div class="flyer-bottom">
+            <h2 class="section-title">Why Choose Stryvon.AI?</h2>
+            <div class="why-cards">
+                <div class="why-card">
+                    <i class="fas fa-bolt"></i>
+                    <strong>Fast Delivery</strong>
+                    <span>Starter websites ready in 1–2 days</span>
+                </div>
+                <div class="why-card">
+                    <i class="fas fa-bullseye"></i>
+                    <strong>Lead Focused</strong>
+                    <span>Built to generate calls, WhatsApp & enquiries</span>
+                </div>
+                <div class="why-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <strong>Mobile Optimized</strong>
+                    <span>Perfect experience across all devices</span>
+                </div>
+                <div class="why-card">
+                    <i class="fas fa-robot"></i>
+                    <strong>AI Ready</strong>
+                    <span>Chatbots, automation & smart forms available</span>
+                </div>
+            </div>
+
+            <h2 class="section-title">Our Website Packages</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card starter">
+                    <span class="pricing-badge">1–2 Days Delivery</span>
+                    <div class="pricing-title">Starter – AED 2,500</div>
+                    <div class="pricing-delivery">Delivery: 1–2 Days</div>
+                    <ul>
+                        <li>Up to 5 Pages</li>
+                        <li>Mobile Responsive Design</li>
+                        <li>WhatsApp Chat Button</li>
+                        <li>Contact Form → Email</li>
+                        <li>Google Maps Integration</li>
+                        <li>Basic SEO Setup</li>
+                        <li>1 Revision Round</li>
+                    </ul>
+                    <div class="pricing-note">Best for small businesses & freelancers</div>
+                </div>
+                <div class="pricing-card professional">
+                    <div class="pricing-title">Professional – AED 4,500</div>
+                    <div class="pricing-delivery">Delivery: 7–10 Days</div>
+                    <ul>
+                        <li>Up to 10 Pages</li>
+                        <li>Custom UI Design</li>
+                        <li>Blog Module</li>
+                        <li>Lead Capture Forms (Database)</li>
+                        <li>Google Analytics Setup</li>
+                        <li>Speed Optimization</li>
+                        <li>Social Media Integration</li>
+                        <li>2 Revision Rounds</li>
+                    </ul>
+                    <div class="pricing-note">Best for SMEs & service companies</div>
+                </div>
+                <div class="pricing-card premium">
+                    <div class="pricing-title">Premium / AI – AED 7,500+</div>
+                    <div class="pricing-delivery">Delivery: 10–14 Days</div>
+                    <ul>
+                        <li>Fully Custom Design</li>
+                        <li>Admin Panel (Manage Content)</li>
+                        <li>Dynamic Pages</li>
+                        <li>AI Chatbot Integration</li>
+                        <li>Multi-Language Support</li>
+                        <li>Booking / Appointment System</li>
+                        <li>Payment Gateway Integration</li>
+                        <li>Advanced SEO Optimization</li>
+                        <li>3 Revision Rounds</li>
+                    </ul>
+                    <div class="pricing-note">Best for corporate & SaaS businesses</div>
+                </div>
+            </div>
+
+            <div class="extras-grid">
+                <div class="addons-card">
+                    <h3><i class="fas fa-puzzle-piece"></i> Add-ons</h3>
+                    <ul class="addons-list">
+                        <li><span>Extra Page</span><span>AED 150</span></li>
+                        <li><span>Logo Design</span><span>AED 300</span></li>
+                        <li><span>Copywriting</span><span>AED 500</span></li>
+                        <li><span>AI Chatbot</span><span>AED 1,000</span></li>
+                        <li><span>Booking System</span><span>AED 1,200</span></li>
+                        <li><span>E-commerce</span><span>From AED 2,500</span></li>
+                        <li><span>Google Business Profile Setup</span><span>AED 300</span></li>
+                        <li><span>Professional Email Setup</span><span>AED 200</span></li>
+                    </ul>
+                </div>
+                <div class="maintenance-card">
+                    <h3><i class="fas fa-sync-alt"></i> Monthly Maintenance</h3>
+                    <ul class="maintenance-list">
+                        <li><span>Basic</span><span class="m-price">AED 99/month</span></li>
+                        <li><span>Standard</span><span class="m-price">AED 199/month</span></li>
+                        <li><span>Pro</span><span class="m-price">AED 399/month</span></li>
+                    </ul>
+                    <p class="maintenance-note">Hosting monitoring • Updates • SEO reports • Priority support</p>
+                </div>
+            </div>
+
+            <div class="contact-section">
+                <h3>Ready to Launch Your Website?</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 0.6rem; opacity: 0.95;">Join UAE businesses growing with Stryvon.AI</p>
+                <div class="contact-row">
+                    <div class="contact-item"><i class="fab fa-whatsapp"></i> Call / WhatsApp: +971-58-900-3150</div>
+                    <div class="contact-item"><i class="fas fa-globe"></i> www.stryvon.ai</div>
+                    <div class="contact-item"><i class="fas fa-envelope"></i> info@stryvon.ai</div>
+                </div>
+                <p class="powered-by">Powered by Stryvon.AI</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

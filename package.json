@@ -1,0 +1,45 @@
+{
+  "name": "stryvon-spa",
+  "version": "1.0.0",
+  "description": "A modern, responsive single-page application for Stryvox IT Consulting",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "npx serve .",
+    "dev": "python -m http.server 8000",
+    "build": "node build.js",
+    "build:css": "node -e \"require('./build.js').buildCSS()\"",
+    "build:html": "node -e \"require('./build.js').buildHTML()\"",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "stryvon",
+    "it-consulting",
+    "spa",
+    "single-page-application",
+    "responsive-design",
+    "vanilla-js",
+    "html5",
+    "css3"
+  ],
+  "author": "Stryvox Consulting",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stryvon/stryvon-spa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stryvon/stryvon-spa/issues"
+  },
+  "homepage": "https://stryvon.com",
+  "devDependencies": {},
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 

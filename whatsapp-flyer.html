@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stryvon.ai - Services Flyer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #e8eaef;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Portrait flyer — increased height so all content fits without scroll */
+        .flyer {
+            width: 8.5in;
+            min-height: 11in;
+            height: auto;
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 24px 48px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top: brochure front style */
+        .flyer-top {
+            background: linear-gradient(145deg, #1a3a7a 0%, #2563eb 50%, #3b82f6 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            padding: 1.5rem 1.75rem;
+            flex: 0 0 auto;
+        }
+
+        .flyer-top::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 65%);
+            border-radius: 50%;
+        }
+
+        .logo-section {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.9rem;
+        }
+
+        .logo-svg {
+            height: 46px;
+            width: auto;
+            color: currentColor;
+            margin-bottom: 0.35rem;
+        }
+
+        .tagline {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.92);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 500;
+        }
+
+        .cover-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.15rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.6rem;
+            line-height: 1.28;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-subheadline {
+            font-size: 1.16rem;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.55;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-features {
+            list-style: none;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.4rem 1.25rem;
+        }
+
+        .cover-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.08rem;
+            color: rgba(255, 255, 255, 0.96);
+            font-weight: 500;
+        }
+
+        .cover-features i {
+            color: #67e8f9;
+            font-size: 1.1rem;
+        }
+
+        .flyer-top .cta-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.99rem;
+            margin-top: 0.85rem;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.02em;
+        }
+
+        /* Bottom: brochure back — premium paper tone */
+        .flyer-bottom {
+            background: #fafbfc;
+            color: #0f172a;
+            padding: 1.35rem 1.75rem;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.41rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.85rem;
+            padding: 0.5rem 0.75rem;
+            background: linear-gradient(90deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 4px solid #2563eb;
+            border-radius: 0 8px 8px 0;
+            letter-spacing: -0.01em;
+        }
+
+        .services-highlight {
+            background: #fff;
+            border: 1px solid #e0e7ff;
+            border-radius: 10px;
+            padding: 1rem 1.15rem;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem 1.25rem;
+            align-items: stretch;
+        }
+
+        .content-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        .service-category {
+            margin-bottom: 0;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.65rem 0.85rem;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .service-category-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .service-category-title i {
+            color: #2563eb;
+            font-size: 0.99rem;
+        }
+
+        .service-items {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .service-items li {
+            font-size: 0.9rem;
+            color: #334155;
+            margin-bottom: 0.22rem;
+            position: relative;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .service-items li::before {
+            content: '•';
+            color: #2563eb;
+            font-weight: bold;
+            position: absolute;
+            left: -0.8rem;
+        }
+
+        .contact-section {
+            background: linear-gradient(145deg, #1a3a7a 0%, #2563eb 100%);
+            color: white;
+            padding: 1.1rem 1.4rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
+        }
+
+        .contact-section h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.65rem;
+            color: white;
+        }
+
+        .contact-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .contact-item i {
+            color: #67e8f9;
+            width: 16px;
+            font-size: 0.94rem;
+            flex-shrink: 0;
+        }
+
+        @media screen and (max-width: 900px) {
+            .flyer {
+                transform: scale(0.85);
+                transform-origin: top center;
+            }
+        }
+
+        @media screen and (max-width: 700px) {
+            .flyer {
+                transform: scale(0.6);
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flyer">
+        <!-- Top: same as brochure front -->
+        <div class="flyer-top">
+            <div class="logo-section">
+                <svg class="logo-svg" viewBox="0 0 170 36" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="flyerLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:currentColor;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:currentColor;stop-opacity:0.9" />
+                        </linearGradient>
+                    </defs>
+                    <g>
+                        <path d="M 6 10 Q 6 6, 10 6 Q 12 6, 13 8 Q 14 10, 13 12 Q 12 13, 10 13 Q 8 13, 7 14 Q 6 16, 7 18 Q 8 19, 10 19 Q 12 19, 13 21 Q 14 23, 13 25 Q 12 27, 10 27 Q 6 27, 6 23" fill="none" stroke="url(#flyerLogoGrad)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+                        <circle cx="18" cy="10" r="2" fill="url(#flyerLogoGrad)" opacity="0.9"/>
+                        <circle cx="20" cy="18" r="1.5" fill="url(#flyerLogoGrad)" opacity="0.7"/>
+                        <circle cx="18" cy="26" r="2" fill="url(#flyerLogoGrad)" opacity="0.9"/>
+                        <line x1="16" y1="12" x2="18" y2="10" stroke="url(#flyerLogoGrad)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                        <line x1="16" y1="24" x2="18" y2="26" stroke="url(#flyerLogoGrad)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                    </g>
+                    <text x="30" y="24" font-family="Plus Jakarta Sans, sans-serif" font-size="20" font-weight="700" letter-spacing="0.5" fill="currentColor">stryvon.ai</text>
+                </svg>
+                <div class="tagline">AI Consulting & Digital Marketing</div>
+            </div>
+            <h1 class="cover-headline">Transform Your Business with AI-Powered Solutions</h1>
+            <p class="cover-subheadline">Expert AI consulting, ML solutions, and digital marketing to drive innovation and growth.</p>
+            <ul class="cover-features">
+                <li><i class="fas fa-check-circle"></i> AI-First Technology Consulting</li>
+                <li><i class="fas fa-check-circle"></i> Machine Learning Solutions</li>
+                <li><i class="fas fa-check-circle"></i> Digital Marketing Excellence</li>
+                <li><i class="fas fa-check-circle"></i> Custom Website Development</li>
+                <li><i class="fas fa-check-circle"></i> E-commerce & Web Applications</li>
+                <li><i class="fas fa-check-circle"></i> Serving India & UAE</li>
+            </ul>
+            <a href="https://www.stryvon.ai" class="cta-button">Visit www.stryvon.ai</a>
+        </div>
+
+        <!-- Bottom: same as brochure back (Our Services + Contact) -->
+        <div class="flyer-bottom">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-highlight">
+            <div class="content-grid">
+                <div class="content-col">
+                    <div class="service-category">
+                        <h3 class="service-category-title"><i class="fas fa-code"></i> Development</h3>
+                        <ul class="service-items">
+                            <li>Website Development</li>
+                            <li>E-commerce Web Applications</li>
+                            <li>Webapp Development</li>
+                            <li>AI-Powered Software & Mobile Apps</li>
+                            <li>Enterprise Applications</li>
+                        </ul>
+                    </div>
+                    <div class="service-category">
+                        <h3 class="service-category-title"><i class="fas fa-cloud"></i> Cloud</h3>
+                        <ul class="service-items">
+                            <li>AWS, Azure, GCP AI Integration</li>
+                            <li>Cloud Infrastructure & MLOps</li>
+                        </ul>
+                    </div>
+                    <div class="service-category">
+                        <h3 class="service-category-title"><i class="fas fa-industry"></i> Industries & Solutions</h3>
+                        <ul class="service-items">
+                            <li>Real Estate & Lease Management AI</li>
+                            <li>Operations, IoT & Analytics</li>
+                            <li>Manufacturing & Predictive Maintenance</li>
+                            <li>Logistics & Smart Fulfillment</li>
+                            <li>Compliance & RegTech AI</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-col">
+                    <div class="service-category">
+                        <h3 class="service-category-title"><i class="fas fa-bullhorn"></i> Digital Marketing</h3>
+                        <ul class="service-items">
+                            <li>SEO Services & Optimization</li>
+                            <li>Social Media Marketing</li>
+                            <li>Content Marketing & Strategy</li>
+                            <li>PPC (Google Ads, Facebook Ads)</li>
+                            <li>Email Marketing Campaigns</li>
+                            <li>Marketing Automation</li>
+                            <li>Analytics & Performance Tracking</li>
+                        </ul>
+                    </div>
+                    <div class="service-category">
+                        <h3 class="service-category-title"><i class="fas fa-brain"></i> AI & ML</h3>
+                        <ul class="service-items">
+                            <li>AI Consulting & Strategy</li>
+                            <li>Custom ML Models, NLP, Computer Vision</li>
+                            <li>Predictive Analytics & Deep Learning</li>
+                        </ul>
+                    </div>
+                    <div class="service-category">
+                        <h3 class="service-category-title"><i class="fas fa-users"></i> Teams & Security</h3>
+                        <ul class="service-items">
+                            <li>Dedicated AI Engineers & Consultants</li>
+                            <li>AI Cybersecurity & Compliance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="contact-section">
+                <h3>Get in Touch</h3>
+                <div class="contact-row">
+                    <div class="contact-item"><i class="fas fa-envelope"></i> hello@stryvon.ai</div>
+                    <div class="contact-item"><i class="fas fa-phone"></i> +971-58-900-3150</div>
+                    <div class="contact-item"><i class="fas fa-globe"></i> www.stryvon.ai</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
