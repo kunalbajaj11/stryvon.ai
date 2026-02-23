@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Requirements Form | stryvon.ai</title>
+    <meta name="description" content="Submit your website requirements for stryvon.ai. Tell us about your business, pages, content, and design preferences.">
+    <link rel="canonical" href="https://www.stryvon.ai/website-requirements.html">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Requirements form page overrides and additions */
+        .req-page .hero-mini {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 4rem 2rem 3rem;
+            padding-top: calc(80px + 2rem);
+            text-align: center;
+            color: var(--neutral-white);
+        }
+        .req-page .hero-mini .section-title { color: var(--neutral-white); margin-bottom: 0.5rem; }
+        .req-page .hero-mini p { color: rgba(255,255,255,0.9); margin: 0; }
+        .req-form-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .form-section {
+            background: var(--neutral-white);
+            border-radius: var(--border-radius-large);
+            box-shadow: 0 4px 20px var(--shadow-light);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .form-section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .form-section-title .emoji { font-size: 1.2rem; }
+        .req-form .form-group { margin-bottom: 1.25rem; }
+        .req-form .form-label { font-size: 0.9rem; }
+        .req-form .form-group input[type="text"],
+        .req-form .form-group input[type="email"],
+        .req-form .form-group input[type="tel"],
+        .req-form .form-group input[type="url"],
+        .req-form .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #E5E7EB;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+        .req-form .form-group input:focus,
+        .req-form .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        .req-form .form-group textarea { min-height: 100px; resize: vertical; }
+        .required-note { color: #EF4444; font-size: 0.85rem; margin-bottom: 1rem; }
+        /* Checkbox and radio groups */
+        .checkbox-group, .radio-group { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; }
+        .checkbox-label, .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 400;
+            color: var(--text-dark);
+        }
+        .checkbox-label input, .radio-label input { width: 18px; height: 18px; accent-color: var(--secondary); cursor: pointer; }
+        .radio-group { flex-direction: column; }
+        .radio-group .radio-label { margin-bottom: 0.25rem; }
+        .form-inline { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+        .form-inline input[type="text"] { max-width: 320px; }
+        .form-hint { font-size: 0.85rem; color: var(--text-medium); margin-top: 0.35rem; }
+        /* File uploads */
+        .file-upload-wrap {
+            border: 2px dashed #E5E7EB;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            background: var(--neutral-light);
+            transition: border-color 0.2s ease;
+        }
+        .file-upload-wrap:hover, .file-upload-wrap.dragover { border-color: var(--secondary); background: #EFF6FF; }
+        .file-upload-wrap input[type="file"] { display: block; margin: 0 auto 0.5rem; font-size: 0.9rem; }
+        .file-list { margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-medium); }
+        .file-list span { display: block; margin-bottom: 0.25rem; }
+        .submit-wrap { text-align: center; padding: 2rem 0; }
+        .submit-wrap .btn { padding: 1rem 2.5rem; font-size: 1rem; }
+        .submit-wrap .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .req-page .nav-link { color: var(--neutral-white); }
+        .req-page .navbar.scrolled .nav-link { color: var(--text-dark); }
+        .other-pages-input { margin-top: 0.75rem; max-width: 100%; }
+        @media (max-width: 768px) {
+            .req-form-wrap { padding: 1rem; }
+            .form-section { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body class="req-page">
+    <!-- Navigation -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="logo-link">
+                    <svg class="logo-svg" viewBox="0 0 170 36" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGradientReq" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:currentColor;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:currentColor;stop-opacity:0.9" />
+                            </linearGradient>
+                        </defs>
+                        <g class="logo-icon">
+                            <path d="M 6 10 Q 6 6, 10 6 Q 12 6, 13 8 Q 14 10, 13 12 Q 12 13, 10 13 Q 8 13, 7 14 Q 6 16, 7 18 Q 8 19, 10 19 Q 12 19, 13 21 Q 14 23, 13 25 Q 12 27, 10 27 Q 6 27, 6 23" fill="none" stroke="url(#logoGradientReq)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+                            <circle cx="18" cy="10" r="2" fill="url(#logoGradientReq)" opacity="0.9"/>
+                            <circle cx="20" cy="18" r="1.5" fill="url(#logoGradientReq)" opacity="0.7"/>
+                            <circle cx="18" cy="26" r="2" fill="url(#logoGradientReq)" opacity="0.9"/>
+                            <line x1="16" y1="12" x2="18" y2="10" stroke="url(#logoGradientReq)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                            <line x1="16" y1="24" x2="18" y2="26" stroke="url(#logoGradientReq)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                        </g>
+                        <text x="30" y="24" font-family="Poppins, sans-serif" font-size="17" font-weight="700" letter-spacing="0.6" fill="currentColor">stryvon.ai</text>
+                    </svg>
+                </a>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#services" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="index.html#contact" class="btn btn-primary">Get in Touch</a>
+            </div>
+            <div class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-mini">
+        <div class="container">
+            <h1 class="section-title">Website Requirements</h1>
+            <p>Share your business details and preferences so we can build the right website for you.</p>
+        </div>
+    </section>
+
+    <div class="req-form-wrap">
+        <form id="websiteRequirementsForm" class="req-form" action="https://formsubmit.co/kunalbajaj19@yahoo.in" method="POST" enctype="multipart/form-data" novalidate>
+            <input type="hidden" name="_subject" value="Website Requirements - stryvon.ai">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://www.stryvon.ai/website-requirements.html?submitted=1">
+            <input type="hidden" name="_autoresponse" value="Thank you for submitting your website requirements to stryvon.ai. We will review and get back to you shortly.">
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+            <!-- 1. BASIC BUSINESS INFORMATION -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">🏢</span> 1. Basic Business Information</h2>
+                <p class="required-note">* Required fields</p>
+                <div class="form-group">
+                    <label for="companyName" class="form-label">Company / Brand Name *</label>
+                    <input type="text" id="companyName" name="company_brand_name" required placeholder="Your company or brand name">
+                </div>
+                <div class="form-group">
+                    <label for="contactName" class="form-label">Contact Person Name *</label>
+                    <input type="text" id="contactName" name="contact_person_name" required placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="form-label">Phone / WhatsApp Number *</label>
+                    <input type="tel" id="phone" name="phone_whatsapp" required placeholder="e.g. +91 98765 43210">
+                </div>
+                <div class="form-group">
+                    <label for="businessLocation" class="form-label">Business Location *</label>
+                    <input type="text" id="businessLocation" name="business_location" required placeholder="City, State/Region, Country">
+                </div>
+                <div class="form-group">
+                    <label for="googleMapsLink" class="form-label">Google Maps Link <span style="color:var(--text-medium);font-weight:400">(optional)</span></label>
+                    <input type="url" id="googleMapsLink" name="google_maps_link" placeholder="https://maps.google.com/...">
+                </div>
+            </div>
+
+            <!-- 2. PURPOSE OF THE WEBSITE -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">🎯</span> 2. Purpose of the Website</h2>
+                <p class="form-label">What do you want your website to achieve?</p>
+                <div class="checkbox-group">
+                    <label class="checkbox-label"><input type="checkbox" name="purpose[]" value="Get more calls"> Get more calls</label>
+                    <label class="checkbox-label"><input type="checkbox" name="purpose[]" value="WhatsApp enquiries"> WhatsApp enquiries</label>
+                    <label class="checkbox-label"><input type="checkbox" name="purpose[]" value="Customer enquiries (contact form)"> Customer enquiries (contact form)</label>
+                    <label class="checkbox-label"><input type="checkbox" name="purpose[]" value="Show your services"> Show your services</label>
+                    <label class="checkbox-label"><input type="checkbox" name="purpose[]" value="Show your products"> Show your products</label>
+                    <label class="checkbox-label"><input type="checkbox" name="purpose[]" value="Portfolio / gallery"> Portfolio / gallery</label>
+                </div>
+            </div>
+
+            <!-- 3. PAGES YOU WANT -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">📄</span> 3. Pages You Want on the Website</h2>
+                <div class="checkbox-group">
+                    <label class="checkbox-label"><input type="checkbox" name="pages[]" value="Home"> Home</label>
+                    <label class="checkbox-label"><input type="checkbox" name="pages[]" value="About Us"> About Us</label>
+                    <label class="checkbox-label"><input type="checkbox" name="pages[]" value="Services"> Services</label>
+                    <label class="checkbox-label"><input type="checkbox" name="pages[]" value="Products"> Products</label>
+                    <label class="checkbox-label"><input type="checkbox" name="pages[]" value="Gallery"> Gallery</label>
+                    <label class="checkbox-label"><input type="checkbox" name="pages[]" value="Testimonials"> Testimonials</label>
+                    <label class="checkbox-label"><input type="checkbox" name="pages[]" value="Contact"> Contact</label>
+                    <label class="checkbox-label"><input type="checkbox" name="pages[]" value="Blog"> Blog</label>
+                </div>
+                <div class="form-group">
+                    <label for="pagesOther" class="form-label">Other (specify)</label>
+                    <input type="text" id="pagesOther" name="pages_other" class="other-pages-input" placeholder="e.g. Careers, Pricing, FAQ">
+                </div>
+            </div>
+
+            <!-- 4. BUSINESS CONTENT -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">✍️</span> 4. Business Content</h2>
+                <p class="form-hint" style="margin-bottom:1rem;">Please provide details for your website.</p>
+                <div class="form-group">
+                    <label for="companyDescription" class="form-label">Company description</label>
+                    <textarea id="companyDescription" name="company_description" rows="4" placeholder="Brief about your company, what you do, and your story"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="servicesProducts" class="form-label">List of services or products</label>
+                    <textarea id="servicesProducts" name="list_services_products" rows="4" placeholder="List your main services or products"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="whyChooseYou" class="form-label">Why customers should choose you</label>
+                    <textarea id="whyChooseYou" name="why_choose_you" rows="3" placeholder="Your unique selling points"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="testimonials" class="form-label">Testimonials (if any)</label>
+                    <textarea id="testimonials" name="testimonials_content" rows="4" placeholder="Paste or type customer testimonials"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="faq" class="form-label">Frequently asked questions <span style="color:var(--text-medium);font-weight:400">(optional)</span></label>
+                    <textarea id="faq" name="faq" rows="4" placeholder="Question and answer pairs if you have them"></textarea>
+                </div>
+            </div>
+
+            <!-- 5. LOGO UPLOAD -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">🖼️</span> 5. Logo Upload</h2>
+                <p class="form-hint" style="margin-bottom:0.75rem; padding:0.5rem 0.75rem; background:#EFF6FF; border-radius:6px;"><strong>Upload limit:</strong> Logo + all photos together must not exceed <strong>10 MB</strong> total.</p>
+                <div class="file-upload-wrap" id="logoDropZone">
+                    <input type="file" id="logoUpload" name="logo" accept=".png,.jpg,.jpeg,.svg,.pdf" data-max-size="5242880">
+                    <p class="form-hint">Formats: PNG, JPG, SVG, PDF. Max size: 5 MB.</p>
+                    <p class="form-hint">If no logo is uploaded, we will use a simple text logo.</p>
+                    <div class="file-list" id="logoFileList"></div>
+                </div>
+            </div>
+
+            <!-- 6. BUSINESS PHOTOS / GALLERY -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">📸</span> 6. Business Photos / Gallery</h2>
+                <div class="file-upload-wrap" id="photosDropZone">
+                    <input type="file" id="photosUpload" name="photos[]" accept=".jpg,.jpeg,.png,.webp" multiple data-max-size="5242880" data-max-files="10">
+                    <p class="form-hint">Examples: office, shop, team, products, completed work. Maximum 10 files. Max 5 MB per file. Formats: JPG, PNG, WEBP.</p>
+                    <p class="form-hint">If no images are provided, we will use professional stock images.</p>
+                    <p class="form-hint" id="totalSizeHint" style="margin-top:0.5rem; font-weight:600;"></p>
+                    <div class="file-list" id="photosFileList"></div>
+                </div>
+            </div>
+
+            <!-- 7. DESIGN STYLE -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">🎨</span> 7. Design Style</h2>
+                <p class="form-label">What style do you prefer?</p>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="design_style" value="Modern" checked> Modern</label>
+                    <label class="radio-label"><input type="radio" name="design_style" value="Corporate"> Corporate</label>
+                    <label class="radio-label"><input type="radio" name="design_style" value="Minimal"> Minimal</label>
+                    <label class="radio-label"><input type="radio" name="design_style" value="Creative"> Creative</label>
+                    <label class="radio-label form-inline">
+                        <input type="radio" name="design_style" value="Similar to reference" id="designSimilar">
+                        Similar to this website:
+                        <input type="url" name="design_reference_url" id="designReferenceUrl" placeholder="https://example.com" style="margin-left:0.25rem;">
+                    </label>
+                </div>
+            </div>
+
+            <!-- 8. DOMAIN & HOSTING -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">🌐</span> 8. Domain & Hosting</h2>
+                <div class="form-group">
+                    <p class="form-label">Do you already have a domain name?</p>
+                    <div class="radio-group">
+                        <label class="radio-label form-inline">
+                            <input type="radio" name="has_domain" value="Yes" id="hasDomainYes"> Yes
+                            <input type="text" name="domain_name" id="domainName" placeholder="Enter domain name" style="margin-left:0.5rem;">
+                        </label>
+                        <label class="radio-label"><input type="radio" name="has_domain" value="No - I need help purchasing" id="hasDomainNo"> No → I need help purchasing a domain</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p class="form-label">Do you have hosting?</p>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="has_hosting" value="Yes" checked> Yes</label>
+                        <label class="radio-label"><input type="radio" name="has_hosting" value="No - I want Stryvon to provide"> No → I want Stryvon.AI to provide hosting</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. PROFESSIONAL EMAIL -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">📧</span> 9. Professional Email</h2>
+                <p class="form-label">Do you want a business email with your domain? (e.g. info@yourcompany.com)</p>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="business_email" value="Yes"> Yes</label>
+                    <label class="radio-label"><input type="radio" name="business_email" value="No" checked> No</label>
+                </div>
+                <div class="form-group">
+                    <label for="emailNames" class="form-label">Preferred email names</label>
+                    <input type="text" id="emailNames" name="preferred_email_names" placeholder="e.g. info, contact, hello, support">
+                </div>
+            </div>
+
+            <!-- 10. ADDITIONAL NOTES -->
+            <div class="form-section">
+                <h2 class="form-section-title"><span class="emoji">📝</span> 10. Additional Notes</h2>
+                <div class="form-group">
+                    <label for="additionalNotes" class="form-label">Anything else you would like on your website?</label>
+                    <textarea id="additionalNotes" name="additional_notes" rows="5" placeholder="Special features, deadlines, references, etc."></textarea>
+                </div>
+            </div>
+
+            <div class="submit-wrap">
+                <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Submit Requirements</button>
+                <p class="form-hint" id="submitHint" style="margin-top:0.75rem;">Fill all required fields (Company name, Contact name, Email, Phone, Business location) to enable submit.</p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Thank you message (shown when ?submitted=1) -->
+    <div id="thankYouMessage" class="form-section" style="display:none; max-width:800px; margin:2rem auto; text-align:center;">
+        <h2 class="form-section-title">Thank you</h2>
+        <p>We have received your website requirements and will get back to you shortly.</p>
+        <a href="index.html" class="btn btn-primary" style="margin-top:1rem;">Back to Home</a>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    <p>&copy; 2025 stryvon.ai. All Rights Reserved.</p>
+                </div>
+                <div class="footer-social">
+                    <a href="https://linkedin.com/company/stryvon" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://twitter.com/stryvon" class="social-link" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+                    <a href="https://github.com/stryvon" class="social-link" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+(function() {
+    var form = document.getElementById('websiteRequirementsForm');
+    var thankYou = document.getElementById('thankYouMessage');
+    var submitBtn = document.getElementById('submitBtn');
+    var submitHint = document.getElementById('submitHint');
+    var logoInput = document.getElementById('logoUpload');
+    var photosInput = document.getElementById('photosUpload');
+    var LOGO_MAX = 5 * 1024 * 1024;
+    var PHOTO_MAX = 5 * 1024 * 1024;
+    var PHOTOS_MAX_COUNT = 10;
+    var TOTAL_MAX = 10 * 1024 * 1024; // FormSubmit.co limit: 10 MB total for all files
+
+    var requiredFields = [
+        document.getElementById('companyName'),
+        document.getElementById('contactName'),
+        document.getElementById('email'),
+        document.getElementById('phone'),
+        document.getElementById('businessLocation')
+    ];
+
+    function isRequiredValid() {
+        var company = (document.getElementById('companyName') && document.getElementById('companyName').value.trim()) || '';
+        var contact = (document.getElementById('contactName') && document.getElementById('contactName').value.trim()) || '';
+        var emailEl = document.getElementById('email');
+        var email = (emailEl && emailEl.value.trim()) || '';
+        var phone = (document.getElementById('phone') && document.getElementById('phone').value.trim()) || '';
+        var location = (document.getElementById('businessLocation') && document.getElementById('businessLocation').value.trim()) || '';
+        var validEmail = email.length > 0 && email.indexOf('@') !== -1 && email.indexOf('.') !== -1;
+        return company.length > 0 && contact.length > 0 && validEmail && phone.length > 0 && location.length > 0;
+    }
+
+    function updateSubmitButton() {
+        if (!submitBtn) return;
+        var valid = isRequiredValid();
+        submitBtn.disabled = !valid;
+        if (submitHint) submitHint.style.display = valid ? 'none' : 'block';
+    }
+
+    if (window.location.search.indexOf('submitted=1') !== -1) {
+        if (form) form.style.display = 'none';
+        if (thankYou) thankYou.style.display = 'block';
+    } else {
+        updateSubmitButton();
+        requiredFields.forEach(function(el) {
+            if (el) {
+                el.addEventListener('input', updateSubmitButton);
+                el.addEventListener('change', updateSubmitButton);
+            }
+        });
+    }
+
+    function showError(input, msg) {
+        var group = input.closest('.form-group') || input.closest('.file-upload-wrap');
+        if (!group) return;
+        var err = group.querySelector('.field-error');
+        if (!err) { err = document.createElement('p'); err.className = 'field-error'; group.appendChild(err); }
+        err.textContent = msg;
+        input.classList.add('error');
+    }
+    function clearError(input) {
+        var group = input.closest('.form-group') || input.closest('.file-upload-wrap');
+        if (group) {
+            var err = group.querySelector('.field-error');
+            if (err) err.remove();
+        }
+        input.classList.remove('error');
+    }
+
+    function getTotalFileSize() {
+        var total = 0;
+        if (logoInput && logoInput.files.length) total += logoInput.files[0].size;
+        if (photosInput && photosInput.files.length) {
+            for (var i = 0; i < photosInput.files.length; i++) total += photosInput.files[i].size;
+        }
+        return total;
+    }
+
+    function updateTotalSizeHint() {
+        var hint = document.getElementById('totalSizeHint');
+        if (!hint) return;
+        var total = getTotalFileSize();
+        if (total === 0) { hint.textContent = ''; return; }
+        var totalMB = (total / (1024 * 1024)).toFixed(2);
+        var ok = total <= TOTAL_MAX;
+        hint.textContent = 'Total uploads: ' + totalMB + ' MB / 10 MB' + (ok ? '' : ' — please reduce size.');
+        hint.style.color = ok ? 'var(--text-medium)' : '#B91C1C';
+    }
+
+    function updateFileList(input, listId) {
+        var list = document.getElementById(listId);
+        if (!list) return;
+        list.innerHTML = '';
+        var files = input.files;
+        for (var i = 0; i < files.length; i++) {
+            var span = document.createElement('span');
+            span.textContent = files[i].name + ' (' + (files[i].size / 1024).toFixed(1) + ' KB)';
+            list.appendChild(span);
+        }
+        updateTotalSizeHint();
+    }
+
+    if (logoInput) {
+        logoInput.addEventListener('change', function() {
+            clearError(logoInput);
+            if (this.files.length && this.files[0].size > LOGO_MAX) {
+                showError(logoInput, 'File must be 5 MB or smaller.');
+                this.value = '';
+            }
+            updateFileList(this, 'logoFileList');
+        });
+    }
+    if (photosInput) {
+        photosInput.addEventListener('change', function() {
+            clearError(photosInput);
+            var files = this.files;
+            if (files.length > PHOTOS_MAX_COUNT) {
+                showError(photosInput, 'Maximum 10 files allowed.');
+                this.value = '';
+            } else {
+                for (var i = 0; i < files.length; i++) {
+                    if (files[i].size > PHOTO_MAX) {
+                        showError(photosInput, 'Each file must be 5 MB or smaller.');
+                        this.value = '';
+                        break;
+                    }
+                }
+            }
+            updateFileList(this, 'photosFileList');
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            var valid = true;
+            document.querySelectorAll('.field-error').forEach(function(el) { el.remove(); });
+            form.querySelectorAll('.error').forEach(function(el) { el.classList.remove('error'); });
+
+            if (logoInput && logoInput.files.length && logoInput.files[0].size > LOGO_MAX) {
+                showError(logoInput, 'Logo must be 5 MB or smaller.');
+                valid = false;
+            }
+            if (photosInput && photosInput.files.length > PHOTOS_MAX_COUNT) {
+                showError(photosInput, 'Maximum 10 photos allowed.');
+                valid = false;
+            } else if (photosInput) {
+                for (var i = 0; i < photosInput.files.length; i++) {
+                    if (photosInput.files[i].size > PHOTO_MAX) {
+                        showError(photosInput, 'Each photo must be 5 MB or smaller.');
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+
+            var total = getTotalFileSize();
+            if (total > TOTAL_MAX) {
+                var errTarget = photosInput || logoInput;
+                if (errTarget) showError(errTarget, 'Total upload size must be 10 MB or less (currently ' + (total / (1024 * 1024)).toFixed(2) + ' MB). Please reduce files or number of photos.');
+                valid = false;
+            }
+
+            if (!valid) e.preventDefault();
+        });
+    }
+
+    var hamburger = document.getElementById('hamburger');
+    var navMenu = document.getElementById('nav-menu');
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+    }
+})();
+    </script>
+</body>
+</html>
