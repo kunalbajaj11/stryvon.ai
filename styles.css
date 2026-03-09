@@ -717,6 +717,52 @@ section {
     font-size: 0.95rem;
 }
 
+/* Strategic Partners Section */
+.partners {
+    background: var(--neutral-light);
+}
+
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: center;
+    justify-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.partner-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 2rem;
+    background: var(--neutral-white);
+    border-radius: var(--border-radius-large);
+    box-shadow: 0 2px 12px var(--shadow-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.partner-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--shadow-light);
+}
+
+.partner-logo {
+    max-width: 180px;
+    max-height: 72px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .partners-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Case Studies Section */
 .case-studies {
     background: var(--neutral-light);
