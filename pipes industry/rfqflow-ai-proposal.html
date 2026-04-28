@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RFQFlow AI - Smart RFQ Automation for PVF Suppliers | Stryvon.AI</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: #ffffff;
+      --panel-soft: #f8fbff;
+      --ink: #0f1f33;
+      --ink-soft: #42566e;
+      --brand: #0d3b66;
+      --brand-2: #1a5d91;
+      --line: #d8e1eb;
+      --accent: #3aa0ff;
+      --good: #1f8a5b;
+      --warn: #b26a1f;
+      --shadow: 0 8px 24px rgba(8, 28, 51, 0.08);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --nav-w: 270px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f6f9fd 0%, #eff4f9 100%);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: var(--nav-w) 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 18px;
+      background: linear-gradient(165deg, #0a2f52, #123d66 55%, #0f3559);
+      color: #fff;
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .brand {
+      margin-bottom: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .brand h1 {
+      font-size: 1rem;
+      margin: 0;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .nav-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.85;
+      margin: 20px 8px 8px;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: calc(100vh - 250px);
+      overflow: auto;
+    }
+
+    .nav-list li a {
+      display: block;
+      padding: 8px 10px;
+      margin: 2px 0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.92);
+      border: 1px solid transparent;
+    }
+
+    .nav-list li a:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .print-btn {
+      margin-top: 14px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .print-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .related-link {
+      margin-top: 10px;
+      display: block;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.09);
+      color: #fff;
+      border-radius: 9px;
+      padding: 10px 12px;
+      font-size: 0.86rem;
+      text-align: center;
+    }
+
+    .related-link:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .main {
+      padding: 26px;
+      max-width: 1320px;
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 18px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 1.2rem;
+      color: var(--brand);
+      letter-spacing: 0.01em;
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at 88% 18%, rgba(58, 160, 255, 0.14), transparent 38%),
+        linear-gradient(130deg, #0d3357, #16466f 58%, #1a578a);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -70px;
+      bottom: -85px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      opacity: 0.6;
+    }
+
+    .hero-kicker {
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 0.76rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.5vw, 2.45rem);
+      line-height: 1.15;
+    }
+
+    .hero .subtitle {
+      margin-top: 10px;
+      font-size: 1.08rem;
+      max-width: 900px;
+      color: rgba(255, 255, 255, 0.94);
+    }
+
+    .hero .value {
+      margin-top: 12px;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.98);
+      font-weight: 600;
+    }
+
+    .hero-meta {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--ink-soft);
+    }
+
+    .list li {
+      margin: 6px 0;
+    }
+
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+      min-height: 100%;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .card h4 {
+      margin: 0 0 8px;
+      font-size: 0.98rem;
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-2);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.93rem;
+    }
+
+    .workflow {
+      border-left: 3px solid #b7d1ea;
+      padding-left: 14px;
+      margin-left: 6px;
+    }
+
+    .wf-step {
+      position: relative;
+      margin: 0 0 10px;
+      padding: 8px 10px 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel-soft);
+    }
+
+    .wf-step::before {
+      content: "";
+      position: absolute;
+      left: -20px;
+      top: 14px;
+      width: 10px;
+      height: 10px;
+      border: 2px solid var(--brand-2);
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .wf-step strong {
+      color: var(--brand);
+      font-size: 0.94rem;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      background: #f9fcff;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 12px;
+    }
+
+    .metric .k {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: #5f738a;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .metric .v {
+      font-size: 1.26rem;
+      color: var(--brand);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .metric small {
+      color: #5b6d80;
+      display: block;
+      margin-top: 5px;
+      font-size: 0.78rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 760px;
+      font-size: 0.9rem;
+      background: #fff;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 11px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf4fb;
+      color: #123c64;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      border: 1px solid;
+      margin-right: 4px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+
+    .pill.good {
+      border-color: #98d9ba;
+      color: #1d6d49;
+      background: #eaf8f0;
+    }
+
+    .pill.warn {
+      border-color: #f1c998;
+      color: #9a5a16;
+      background: #fff4e9;
+    }
+
+    .phase {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 12px;
+      background: linear-gradient(180deg, #ffffff, #f9fcff);
+      position: relative;
+    }
+
+    .phase h4 {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: 0.98rem;
+    }
+
+    .phase .num {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(140deg, var(--brand), #2a6ba3);
+      font-size: 0.86rem;
+      margin-right: 7px;
+    }
+
+    .outcome-note {
+      font-size: 0.86rem;
+      color: #5d6e82;
+      margin-top: 8px;
+    }
+
+    .foot {
+      background: #0d3357;
+      color: #fff;
+      border-color: #24496f;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo-box {
+      width: 140px;
+      height: 42px;
+      border: 1px dashed rgba(255, 255, 255, 0.45);
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .small {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+    }
+
+    .muted {
+      color: #5f7085;
+    }
+
+    @media (max-width: 1120px) {
+      :root { --nav-w: 230px; }
+      .dashboard { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: relative;
+        height: auto;
+      }
+
+      .nav-list {
+        max-height: none;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+      }
+
+      .main {
+        padding: 16px;
+      }
+
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .section {
+        box-shadow: none;
+        margin: 0 0 12px;
+      }
+
+      .hero {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .print-avoid-break {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>Stryvon.AI</h1>
+        <p>Enterprise AI Solutions for Industrial Operations</p>
+      </div>
+      <div class="nav-title">Proposal Navigation</div>
+      <ul class="nav-list">
+        <li><a href="#hero">Overview</a></li>
+        <li><a href="#problem">Industry Problem</a></li>
+        <li><a href="#product">Product Overview</a></li>
+        <li><a href="#features">Core Features</a></li>
+        <li><a href="#roles">User Roles</a></li>
+        <li><a href="#workflow">Workflow</a></li>
+        <li><a href="#dashboard">Dashboard Mockup</a></li>
+        <li><a href="#fit">Why It Fits PVF</a></li>
+        <li><a href="#impact">Business Impact</a></li>
+        <li><a href="#integration">Integrations</a></li>
+        <li><a href="#phases">Implementation Phases</a></li>
+        <li><a href="#architecture">Tech Architecture</a></li>
+        <li><a href="#roi">Estimated ROI</a></li>
+        <li><a href="#footer">Closing</a></li>
+      </ul>
+      <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+      <a class="related-link" href="demandpulse-proposal.html">Open DemandPulse Proposal</a>
+    </aside>
+
+    <main class="main">
+      <section class="section hero print-avoid-break" id="hero">
+        <div class="hero-kicker">Confidential Concept • Stryvon.AI</div>
+        <h2>RFQFlow AI</h2>
+        <p class="subtitle">AI-powered RFQ automation for industrial distributors and PVF supply businesses.</p>
+        <p class="value">Reduce quote turnaround time, improve pricing accuracy, and standardize bid workflows.</p>
+        <div class="hero-meta">
+          <span class="tag">Pipes</span>
+          <span class="tag">Valves</span>
+          <span class="tag">Fittings</span>
+          <span class="tag">Flanges</span>
+          <span class="tag">EPC / Oil &amp; Gas / Power</span>
+        </div>
+      </section>
+
+      <section class="section" id="problem">
+        <h3 class="section-title">Industry Problem</h3>
+        <div class="grid-2">
+          <div>
+            <ul class="list">
+              <li>Manual RFQ parsing from PDFs, emails, BOQs, and spreadsheet attachments creates bottlenecks during high-volume bid cycles.</li>
+              <li>Cross-checking line-item specs such as size, grade, schedule, end connection, and standard references is slow and error-prone.</li>
+              <li>Quote quality and response speed often depend on individual coordinators and estimators rather than a repeatable process.</li>
+            </ul>
+          </div>
+          <div>
+            <ul class="list">
+              <li>Vendor comparison is inconsistent when quote formats, lead times, and technical alternates are not normalized.</li>
+              <li>Pricing logic can vary by team member, creating avoidable margin leakage on complex bids.</li>
+              <li>Large EPC and oil &amp; gas customers expect rapid, technically accurate responses that are difficult to deliver at scale.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="product">
+        <h3 class="section-title">Product Overview</h3>
+        <div class="grid-3">
+          <article class="card">
+            <h4>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h10l6 6v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M14 5v6h6"/></svg>
+              </span>
+              Multi-format intake
+            </h4>
+            <p>Upload RFQ PDF, Excel sheet, BOQ export, or email attachments into one standardized intake queue.</p>
+          </article>
+          <article class="card">
+            <h4>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="3"/></svg>
+              </span>
+              AI line extraction
+            </h4>
+            <p>Extracts item description, NPS size, schedule, material grade, class/rating, quantity, and standards from unstructured documents.</p>
+          </article>
+          <article class="card">
+            <h4>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h18v10H3z"/><path d="M8 7V5h8v2M8 17h8"/></svg>
+              </span>
+              Catalog mapping
+            </h4>
+            <p>Suggests internal SKU candidates and closest catalog equivalents for valves, fittings, flanges, and pipe materials.</p>
+          </article>
+          <article class="card">
+            <h4>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              </span>
+              Vendor routing
+            </h4>
+            <p>Routes line items to approved vendors based on commodity, geography, framework terms, and historical service levels.</p>
+          </article>
+          <article class="card">
+            <h4>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20h18"/><path d="M6 16V9m6 7V5m6 11v-6"/></svg>
+              </span>
+              Normalized comparison
+            </h4>
+            <p>Builds a like-for-like supplier quote matrix with technical compliance checks, lead times, and price variance views.</p>
+          </article>
+          <article class="card">
+            <h4>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12v18l-6-3-6 3z"/></svg>
+              </span>
+              Quote orchestration
+            </h4>
+            <p>Generates customer quotation drafts, manages revisions, and tracks approval flow from coordinator to management sign-off.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h3 class="section-title">Core Features</h3>
+        <div class="grid-3">
+          <div class="card"><h4>RFQ document ingestion</h4><p>Email and portal capture with centralized queueing.</p></div>
+          <div class="card"><h4>OCR + structured data extraction</h4><p>Template-aware extraction from scans and digital files.</p></div>
+          <div class="card"><h4>Technical spec normalization</h4><p>Standardizes nomenclature for grades, schedules, and standards.</p></div>
+          <div class="card"><h4>Vendor recommendation engine</h4><p>Suggests preferred suppliers by category, compliance, and performance.</p></div>
+          <div class="card"><h4>Auto-quotation builder</h4><p>Assembles draft line pricing and commercial terms automatically.</p></div>
+          <div class="card"><h4>Margin guardrails</h4><p>Flags low-margin or non-compliant pricing before submission.</p></div>
+          <div class="card"><h4>Revision history</h4><p>Maintains audit-ready changes across customer and vendor revisions.</p></div>
+          <div class="card"><h4>Approval workflow</h4><p>Role-based approval logic for exception pricing and high-value bids.</p></div>
+          <div class="card"><h4>SLA timers &amp; turnaround dashboard</h4><p>Monitors cycle times by branch, account, and commodity family.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="roles">
+        <h3 class="section-title">User Roles</h3>
+        <div class="grid-2">
+          <div class="card"><h4>Sales Coordinator</h4><p>Owns intake quality, item validation, and customer-facing quote assembly.</p></div>
+          <div class="card"><h4>Estimation Manager</h4><p>Reviews extraction confidence, pricing strategy, and technical alternates.</p></div>
+          <div class="card"><h4>Procurement Team</h4><p>Runs vendor outreach, quote collection, and lead-time alignment.</p></div>
+          <div class="card"><h4>Management Approver</h4><p>Approves commercial exceptions, margin thresholds, and risk decisions.</p></div>
+          <div class="card"><h4>Key Account Manager</h4><p>Aligns final proposal with account-level terms and strategic relationships.</p></div>
+          <div class="card"><h4>System Administrator</h4><p>Manages master data, policy rules, and integration governance.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="workflow">
+        <h3 class="section-title">Sample Workflow</h3>
+        <div class="workflow">
+          <div class="wf-step"><strong>1. RFQ received</strong> - Email inbox, customer portal, or manual upload initiates a controlled intake record.</div>
+          <div class="wf-step"><strong>2. Parsed by system</strong> - OCR and AI extraction classify each line item and technical attribute.</div>
+          <div class="wf-step"><strong>3. Item mapping</strong> - Items are mapped to internal product master and approved vendor set.</div>
+          <div class="wf-step"><strong>4. Quote comparison generated</strong> - Supplier submissions are normalized into a comparable matrix.</div>
+          <div class="wf-step"><strong>5. Sales team review</strong> - Commercial pricing and margin checks are completed with guardrails.</div>
+          <div class="wf-step"><strong>6. Approval</strong> - Workflow routes for financial or managerial approval based on thresholds.</div>
+          <div class="wf-step"><strong>7. Quotation sent</strong> - Final proposal is issued to customer with full revision traceability.</div>
+          <div class="wf-step"><strong>8. Win/loss tracked</strong> - Outcomes feed analytics for vendor strategy and pricing performance.</div>
+        </div>
+      </section>
+
+      <section class="section" id="dashboard">
+        <h3 class="section-title">Dashboard Mockup</h3>
+        <div class="dashboard print-avoid-break">
+          <div class="metric"><div class="k">Open RFQs</div><div class="v">142</div><small>Across 7 branches</small></div>
+          <div class="metric"><div class="k">Quotes Due Today</div><div class="v">37</div><small>12 with &lt;4h SLA</small></div>
+          <div class="metric"><div class="k">Avg Turnaround</div><div class="v">9.8h</div><small>Rolling 30-day</small></div>
+          <div class="metric"><div class="k">Win Rate</div><div class="v">34%</div><small>Tracked by vertical</small></div>
+          <div class="metric"><div class="k">Margin at Risk</div><div class="v">$1.9M</div><small>Below target threshold</small></div>
+          <div class="metric"><div class="k">Top Materials</div><div class="v">A106 / A105</div><small>Most requested specs</small></div>
+        </div>
+        <p class="outcome-note">Illustrative dashboard values shown for concept demonstration.</p>
+      </section>
+
+      <section class="section" id="fit">
+        <h3 class="section-title">Why This Fits an Industrial PVF Distributor</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h4>Built for technical line-item complexity</h4>
+            <p>RFQFlow AI handles detailed PVF attributes (size, schedule, end prep, MTC/compliance requirements) that general-purpose CRM workflows cannot reliably process.</p>
+          </div>
+          <div class="card">
+            <h4>Supports mixed sourcing models</h4>
+            <p>The platform accommodates stocked inventory, back-to-back procurement, and project-based sourcing across domestic and international vendors.</p>
+          </div>
+          <div class="card">
+            <h4>Aligns with branch and key-account operations</h4>
+            <p>Branch-level SLA visibility and enterprise account controls help balance local responsiveness with centralized governance.</p>
+          </div>
+          <div class="card">
+            <h4>Improves consistency for high-value bids</h4>
+            <p>Standardized quote logic reduces variation between estimators, improving confidence in both customer pricing and vendor strategy.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="impact">
+        <h3 class="section-title">Business Impact</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Faster quote response</h4><p>Accelerates RFQ-to-quotation cycle for time-sensitive EPC and shutdown projects.</p></div>
+          <div class="card"><h4>Reduced manual errors</h4><p>Decreases specification mismatches and omissions in large multi-line bids.</p></div>
+          <div class="card"><h4>Better vendor negotiation</h4><p>Increases leverage using historical supplier performance and quote benchmarking.</p></div>
+          <div class="card"><h4>Improved bid win rate</h4><p>Enables timely, technically complete responses that improve customer confidence.</p></div>
+          <div class="card"><h4>Scalable sales operations</h4><p>Supports growth without linear increases in estimator and coordinator workload.</p></div>
+          <div class="card"><h4>Stronger governance</h4><p>Creates a traceable, auditable process for approvals, revisions, and policy checks.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="integration">
+        <h3 class="section-title">Integration Scope</h3>
+        <div class="table-wrap">
+          <table aria-label="Integration matrix">
+            <thead>
+              <tr>
+                <th>System</th>
+                <th>Purpose</th>
+                <th>Typical Data Exchange</th>
+                <th>Value to RFQFlow AI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ERP</td>
+                <td>Commercial and operational truth source</td>
+                <td>SKU master, cost basis, customer terms, final order outcomes</td>
+                <td>Anchors quote accuracy and post-quote analytics</td>
+              </tr>
+              <tr>
+                <td>CRM</td>
+                <td>Account and opportunity context</td>
+                <td>Account tiers, contacts, opportunity stages, renewal indicators</td>
+                <td>Aligns quote strategy to account priorities</td>
+              </tr>
+              <tr>
+                <td>Email Inbox</td>
+                <td>Primary intake channel</td>
+                <td>RFQ attachments, message metadata, response timestamps</td>
+                <td>Automates intake without changing customer behavior</td>
+              </tr>
+              <tr>
+                <td>Inventory Database</td>
+                <td>Stock and availability visibility</td>
+                <td>On-hand quantity, branch location, replenishment ETA</td>
+                <td>Improves feasibility and lead-time confidence</td>
+              </tr>
+              <tr>
+                <td>Supplier Master</td>
+                <td>Vendor governance framework</td>
+                <td>Approved vendor lists, quality ratings, contract terms</td>
+                <td>Improves routing and compliance in sourcing decisions</td>
+              </tr>
+              <tr>
+                <td>Customer Portal</td>
+                <td>Digital customer engagement layer</td>
+                <td>RFQ submissions, quote response, revision communication</td>
+                <td>Creates seamless customer experience at scale</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="phases">
+        <h3 class="section-title">Implementation Phases</h3>
+        <div class="grid-3">
+          <div class="phase">
+            <h4><span class="num">1</span>Phase 1: RFQ Intake + Parsing</h4>
+            <ul class="list">
+              <li>Ingest email and portal RFQs into a unified queue.</li>
+              <li>Deploy OCR and extraction workflows for line-item structuring.</li>
+              <li>Establish baseline confidence scoring and manual review checkpoints.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <h4><span class="num">2</span>Phase 2: Quote Comparison + Pricing Engine</h4>
+            <ul class="list">
+              <li>Introduce normalized supplier quote matrix and alternative mapping.</li>
+              <li>Apply rule-based pricing support with margin guardrails.</li>
+              <li>Enable structured approval routing for exceptions.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <h4><span class="num">3</span>Phase 3: ERP Integration + Analytics</h4>
+            <ul class="list">
+              <li>Connect to ERP and inventory systems for commercial integrity.</li>
+              <li>Launch executive dashboards for turnaround, win/loss, and margin trends.</li>
+              <li>Operationalize continuous improvement with closed-loop reporting.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="architecture">
+        <h3 class="section-title">Suggested Technology Architecture</h3>
+        <div class="table-wrap">
+          <table aria-label="Architecture components">
+            <thead>
+              <tr>
+                <th>Layer</th>
+                <th>Recommended Capability</th>
+                <th>Notes for Industrial Deployment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Frontend</td>
+                <td>Secure web application for intake, validation, and quote workbench</td>
+                <td>Role-specific views for sales, estimation, procurement, and approvers</td>
+              </tr>
+              <tr>
+                <td>Backend</td>
+                <td>Workflow orchestration and business rule engine</td>
+                <td>Handles assignment, approvals, SLA logic, and exception routing</td>
+              </tr>
+              <tr>
+                <td>Database</td>
+                <td>Relational store for RFQs, items, decisions, and outcomes</td>
+                <td>Supports traceability and reporting across branches/accounts</td>
+              </tr>
+              <tr>
+                <td>OCR / AI Extraction</td>
+                <td>Document intelligence pipeline for item and spec extraction</td>
+                <td>Domain-tuned models improve parsing of PVF terminology</td>
+              </tr>
+              <tr>
+                <td>Document Storage</td>
+                <td>Encrypted object storage for RFQs and vendor responses</td>
+                <td>Retention policy aligned with audit/compliance requirements</td>
+              </tr>
+              <tr>
+                <td>Authentication</td>
+                <td>SSO and role-based access control</td>
+                <td>Enterprise identity integration and policy enforcement</td>
+              </tr>
+              <tr>
+                <td>Audit Logs</td>
+                <td>Immutable activity and decision logs</td>
+                <td>Critical for pricing governance and regulatory defensibility</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="roi">
+        <h3 class="section-title">Estimated Business Outcomes (Illustrative)</h3>
+        <div class="grid-4">
+          <div class="card">
+            <h4>40-60% Faster RFQ Processing</h4>
+            <p>Estimated cycle-time improvement from automated extraction, routing, and quote assembly.</p>
+            <span class="pill good">Estimated Outcome</span>
+          </div>
+          <div class="card">
+            <h4>Improved Response Consistency</h4>
+            <p>Standardized bid logic across teams may improve technical and commercial consistency.</p>
+            <span class="pill good">Estimated Outcome</span>
+          </div>
+          <div class="card">
+            <h4>Lower Estimator Dependency</h4>
+            <p>Structured workflows reduce reliance on a few high-experience individuals for every bid.</p>
+            <span class="pill warn">Context Dependent</span>
+          </div>
+          <div class="card">
+            <h4>Better Margin Control</h4>
+            <p>Guardrails and visibility can reduce avoidable margin leakage in complex quotations.</p>
+            <span class="pill good">Estimated Outcome</span>
+          </div>
+        </div>
+        <p class="outcome-note">These metrics are directional estimates for business case modeling and are not guaranteed performance claims.</p>
+      </section>
+
+      <section class="section foot" id="footer">
+        <div>
+          <h3 style="margin:0 0 6px;">Confidential Product Concept</h3>
+          <div class="small" style="color:rgba(255,255,255,0.88);">RFQFlow AI proposal prepared by <strong>Stryvon.AI</strong> for enterprise industrial distribution operations.</div>
+          <div class="small muted" style="color:rgba(255,255,255,0.75); margin-top:6px;">Presenter: Kunal Bajaj</div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

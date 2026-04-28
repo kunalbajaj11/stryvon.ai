@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarginCommand - Project Profitability & Margin Control | Stryvon.AI</title>
+  <style>
+    :root {
+      --bg: #f3f7fc;
+      --panel: #ffffff;
+      --panel-soft: #f8fbff;
+      --ink: #12273f;
+      --ink-soft: #4f647d;
+      --brand: #123f6a;
+      --brand-2: #2b6da3;
+      --graphite: #233649;
+      --line: #d8e1ec;
+      --good: #1e8259;
+      --warn: #a8671f;
+      --risk: #ac3f3f;
+      --accent: #378de6;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 8px 24px rgba(12, 30, 49, 0.08);
+      --nav-w: 276px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8fbff, #edf3f9);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: var(--nav-w) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px 16px;
+      background: linear-gradient(158deg, #0f3458, #17466f 58%, #22394d);
+      color: #fff;
+      border-right: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .brand {
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.4px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .nav-title {
+      margin: 14px 8px 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.85;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: calc(100vh - 250px);
+      overflow: auto;
+    }
+
+    .nav-list a {
+      display: block;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin: 2px 0;
+      font-size: 0.89rem;
+      color: rgba(255, 255, 255, 0.93);
+      border: 1px solid transparent;
+    }
+
+    .nav-list a:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-weight: 600;
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: center;
+      display: block;
+    }
+
+    .btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+    .main {
+      max-width: 1360px;
+      padding: 24px;
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .title {
+      margin: 0 0 13px;
+      color: var(--brand);
+      font-size: 1.2rem;
+      letter-spacing: 0.01em;
+    }
+
+    .hero {
+      color: #fff;
+      background:
+        radial-gradient(circle at 86% 20%, rgba(55, 141, 230, 0.18), transparent 38%),
+        linear-gradient(130deg, #10385f, #1a4d79 58%, #233a4d);
+      border-color: rgba(255, 255, 255, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      right: -90px;
+      bottom: -110px;
+    }
+
+    .hero-kicker {
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 12px;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.6vw, 2.52rem);
+      line-height: 1.13;
+    }
+
+    .hero .subtitle {
+      margin: 10px 0 0;
+      font-size: 1.08rem;
+      color: rgba(255, 255, 255, 0.95);
+      max-width: 950px;
+    }
+
+    .hero .tagline {
+      margin: 10px 0 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.99);
+    }
+
+    .hero-tags {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      background: linear-gradient(180deg, #fff, #fafdff);
+      min-height: 100%;
+    }
+
+    .card h4 {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: 0.98rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.93rem;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--ink-soft);
+      font-size: 0.93rem;
+    }
+
+    .list li { margin: 6px 0; }
+
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--panel-soft);
+      padding: 12px;
+    }
+
+    .kpi .k {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #5f7186;
+      margin-bottom: 7px;
+    }
+
+    .kpi .v {
+      font-size: 1.3rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .kpi small {
+      display: block;
+      margin-top: 5px;
+      color: #5f7083;
+      font-size: 0.78rem;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .chart-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .chart-title {
+      margin: 0 0 8px;
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #4e627a;
+    }
+
+    .legend {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: #5d7289;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    .dot.blue { background: #2e7ed0; }
+    .dot.green { background: #2f9b6e; }
+    .dot.orange { background: #d48e3d; }
+    .dot.red { background: #d05a5a; }
+
+    .timeline {
+      border-left: 3px solid #b8d1eb;
+      margin-left: 6px;
+      padding-left: 14px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel-soft);
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .step::before {
+      content: "";
+      position: absolute;
+      left: -20px;
+      top: 13px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--brand-2);
+      background: #fff;
+    }
+
+    .step strong { color: var(--brand); }
+
+    .phase {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: linear-gradient(180deg, #fff, #f9fcff);
+      padding: 12px;
+    }
+
+    .phase .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 7px;
+      color: #fff;
+      font-size: 0.86rem;
+      background: linear-gradient(140deg, var(--brand), #2a6da4);
+    }
+
+    .phase h4 {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: 0.98rem;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 11px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf4fc;
+      color: #123f67;
+      font-weight: 650;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .pill {
+      display: inline-block;
+      margin-top: 8px;
+      border-radius: 999px;
+      border: 1px solid;
+      padding: 3px 8px;
+      font-size: 0.74rem;
+    }
+
+    .pill.illustrative {
+      border-color: #98d7b9;
+      background: #e8f8ef;
+      color: #216f4b;
+    }
+
+    .small-note {
+      margin-top: 8px;
+      font-size: 0.84rem;
+      color: #5f6f82;
+    }
+
+    .footer {
+      color: #fff;
+      background: linear-gradient(136deg, #10385e, #22384c);
+      border-color: #274a68;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .logo-box {
+      width: 150px;
+      height: 42px;
+      border: 1px dashed rgba(255, 255, 255, 0.45);
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    @media (max-width: 1200px) {
+      :root { --nav-w: 236px; }
+      .kpi-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .nav-list {
+        max-height: none;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+      }
+      .main { padding: 15px; }
+      .grid-2, .grid-3, .grid-4, .kpi-strip { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .layout { display: block; }
+      .sidebar { display: none; }
+      .main { max-width: 100%; padding: 0; }
+      .section { box-shadow: none; margin: 0 0 12px; }
+      .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>Stryvon.AI</h1>
+        <p>Enterprise AI Platforms for Industrial Distribution</p>
+      </div>
+      <div class="nav-title">Proposal Sections</div>
+      <ul class="nav-list">
+        <li><a href="#hero">Overview</a></li>
+        <li><a href="#problem">Executive Problem</a></li>
+        <li><a href="#overview">Product Overview</a></li>
+        <li><a href="#modules">Key Modules</a></li>
+        <li><a href="#dashboard">Dashboard Mockup</a></li>
+        <li><a href="#usecases">Example Use Cases</a></li>
+        <li><a href="#roles">User Roles</a></li>
+        <li><a href="#outcomes">Business Outcomes</a></li>
+        <li><a href="#roadmap">Implementation Roadmap</a></li>
+        <li><a href="#integrations">Data Integrations</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#strategy">Strategic Importance</a></li>
+        <li><a href="#roi">ROI</a></li>
+        <li><a href="#footer">Closing</a></li>
+      </ul>
+      <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+      <a class="btn" href="rfqflow-ai-proposal.html">Open RFQFlow AI Proposal</a>
+    </aside>
+
+    <main class="main">
+      <section class="section hero" id="hero">
+        <div class="hero-kicker">Confidential Concept • Stryvon.AI</div>
+        <h2>MarginCommand</h2>
+        <p class="subtitle">Real-time profitability intelligence for industrial supply projects.</p>
+        <p class="tagline">Protect margin from quotation to delivery.</p>
+        <div class="hero-tags">
+          <span class="tag">Project Margin Control</span>
+          <span class="tag">Quote-to-Order Visibility</span>
+          <span class="tag">Cost Variance Intelligence</span>
+          <span class="tag">Approval Governance</span>
+        </div>
+      </section>
+
+      <section class="section" id="problem">
+        <h3 class="title">Executive Problem Statement</h3>
+        <div class="grid-2">
+          <ul class="list">
+            <li>Revenue is visible in most systems, but margin leakage often emerges too late for corrective action.</li>
+            <li>Procurement cost changes between quote issue and order confirmation erode expected profitability.</li>
+            <li>Freight uplifts, delivery delays, and revised sourcing paths distort true project economics.</li>
+          </ul>
+          <ul class="list">
+            <li>Commercial teams frequently lack early-warning indicators before a project turns low-margin or loss-making.</li>
+            <li>High-value PVF projects carry multi-line complexity where small line-level variances compound quickly.</li>
+            <li>Leadership needs consistent profitability controls across branches, sales teams, and customer portfolios.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="overview">
+        <h3 class="title">Product Overview</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Quoted vs actual margin tracking</h4><p>Continuously reconciles initial quote margin against realized commercial performance during execution.</p></div>
+          <div class="card"><h4>Procurement cost variance capture</h4><p>Measures supplier price movement impact by line item, product family, and project stage.</p></div>
+          <div class="card"><h4>Logistics and delivery cost inclusion</h4><p>Integrates freight and fulfillment charges into project-level gross margin visibility.</p></div>
+          <div class="card"><h4>Discount approval monitoring</h4><p>Tracks approved and exception discounts with governance checkpoints and accountability trails.</p></div>
+          <div class="card"><h4>Multi-level margin analytics</h4><p>Provides profitability views by project, customer, sales manager, branch, and material family.</p></div>
+          <div class="card"><h4>Threshold-based alerts</h4><p>Triggers notifications when margins fall below policy thresholds before commercial damage escalates.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="modules">
+        <h3 class="title">Key Modules</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Quote-to-order profitability</h4><p>Tracks commercial drift from bid submission through order closure.</p></div>
+          <div class="card"><h4>Cost variance tracking</h4><p>Surfaces procurement deltas across suppliers and commodity groups.</p></div>
+          <div class="card"><h4>Gross margin dashboard</h4><p>Executive visibility into portfolio margin health and trend direction.</p></div>
+          <div class="card"><h4>Low-margin approval controls</h4><p>Structured exception workflows for below-threshold quotations.</p></div>
+          <div class="card"><h4>Customer profitability analysis</h4><p>Highlights account-level profitability patterns and leakage sources.</p></div>
+          <div class="card"><h4>Branch & salesperson performance</h4><p>Compares commercial outcomes across teams and geographies.</p></div>
+          <div class="card"><h4>Exception alerts & audit logs</h4><p>Maintains complete traceability for decisions, overrides, and approvals.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="dashboard">
+        <h3 class="title">Dashboard Mockup</h3>
+        <div class="kpi-strip">
+          <div class="kpi"><div class="k">Revenue</div><div class="v">$124.6M</div><small>Quarter-to-date project sales</small></div>
+          <div class="kpi"><div class="k">Gross Margin</div><div class="v">18.9%</div><small>Blended across active projects</small></div>
+          <div class="kpi"><div class="k">Margin Leakage</div><div class="v">$3.2M</div><small>Variance vs quoted plan</small></div>
+          <div class="kpi"><div class="k">At-Risk Projects</div><div class="v">27</div><small>Below minimum margin policy</small></div>
+          <div class="kpi"><div class="k">Top Profitable Accounts</div><div class="v">12</div><small>Above target contribution band</small></div>
+          <div class="kpi"><div class="k">Low-Margin Quotes Pending</div><div class="v">19</div><small>Awaiting commercial approval</small></div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="chart-card">
+            <p class="chart-title">Margin Trend Over Time</p>
+            <svg viewBox="0 0 520 185" width="100%" height="185" role="img" aria-label="Margin trend chart">
+              <rect x="0" y="0" width="520" height="185" fill="#f9fcff"/>
+              <line x1="42" y1="25" x2="42" y2="155" stroke="#b8c9db"/>
+              <line x1="42" y1="155" x2="500" y2="155" stroke="#b8c9db"/>
+              <polyline points="42,104 110,94 178,99 246,89 314,95 382,84 450,78 500,72" fill="none" stroke="#2d7fce" stroke-width="3"/>
+              <polyline points="42,132 110,123 178,130 246,126 314,121 382,114 450,110 500,106" fill="none" stroke="#d25a5a" stroke-width="2.5"/>
+              <text x="44" y="20" fill="#5b738c" font-size="11">Margin %</text>
+              <text x="470" y="171" fill="#5b738c" font-size="11">Month</text>
+            </svg>
+            <div class="legend">
+              <span><span class="dot blue"></span>Planned Margin</span>
+              <span><span class="dot red"></span>Actual Margin</span>
+              <span><span class="dot orange"></span>Leakage Gap</span>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <p class="chart-title">At-Risk Project Mix</p>
+            <svg viewBox="0 0 360 185" width="100%" height="185" role="img" aria-label="Risk mix chart">
+              <rect x="0" y="0" width="360" height="185" fill="#f9fcff"/>
+              <circle cx="128" cy="92" r="62" fill="none" stroke="#2f9b6e" stroke-width="24" stroke-dasharray="150 240" transform="rotate(-90 128 92)"/>
+              <circle cx="128" cy="92" r="62" fill="none" stroke="#d18b38" stroke-width="24" stroke-dasharray="90 300" transform="rotate(22 128 92)"/>
+              <circle cx="128" cy="92" r="62" fill="none" stroke="#cf5959" stroke-width="24" stroke-dasharray="65 325" transform="rotate(120 128 92)"/>
+              <text x="109" y="96" fill="#294660" font-size="15" font-weight="700">27</text>
+              <text x="95" y="113" fill="#5f738a" font-size="11">At Risk</text>
+              <rect x="218" y="46" width="115" height="22" rx="4" fill="#ecf4fc"/><text x="226" y="61" fill="#44607a" font-size="11">High: 9 projects</text>
+              <rect x="218" y="78" width="115" height="22" rx="4" fill="#ecf4fc"/><text x="226" y="93" fill="#44607a" font-size="11">Medium: 11</text>
+              <rect x="218" y="110" width="115" height="22" rx="4" fill="#ecf4fc"/><text x="226" y="125" fill="#44607a" font-size="11">Low: 7</text>
+            </svg>
+            <div class="legend">
+              <span><span class="dot green"></span>Low Risk</span>
+              <span><span class="dot orange"></span>Medium Risk</span>
+              <span><span class="dot red"></span>High Risk</span>
+            </div>
+          </div>
+        </div>
+        <p class="small-note">Dashboard values are illustrative for executive concept review.</p>
+      </section>
+
+      <section class="section" id="usecases">
+        <h3 class="title">Example Use Cases</h3>
+        <div class="timeline">
+          <div class="step"><strong>1. Quotation submitted with healthy margin:</strong> initial bid meets threshold with approved commercial assumptions.</div>
+          <div class="step"><strong>2. Supplier cost increases before order closure:</strong> procurement updates trigger variance capture against quoted cost basis.</div>
+          <div class="step"><strong>3. Freight uplift reduces actual margin:</strong> logistics surcharge is included, shifting project margin into warning band.</div>
+          <div class="step"><strong>4. System alerts approver:</strong> management is notified before execution proceeds into loss-making territory.</div>
+        </div>
+      </section>
+
+      <section class="section" id="roles">
+        <h3 class="title">User Roles</h3>
+        <div class="grid-2">
+          <div class="card"><h4>Sales Director</h4><p>Monitors quote health, approval cycles, and commercial discipline across team pipeline.</p></div>
+          <div class="card"><h4>Finance Controller</h4><p>Validates margin integrity and variance drivers at project and portfolio level.</p></div>
+          <div class="card"><h4>Branch Manager</h4><p>Tracks branch-specific profitability and exception exposure across active opportunities.</p></div>
+          <div class="card"><h4>Procurement Lead</h4><p>Feeds sourcing updates and mitigates supplier-driven cost erosion.</p></div>
+          <div class="card"><h4>CEO / Executive Team</h4><p>Obtains early warning visibility into commercial risk and earnings quality.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="outcomes">
+        <h3 class="title">Business Outcomes</h3>
+        <div class="grid-4">
+          <div class="card"><h4>Better pricing discipline</h4><p>Standardized thresholds and approvals improve bid consistency in competitive project scenarios.</p></div>
+          <div class="card"><h4>Faster intervention</h4><p>Early-warning alerts enable timely action before margin deterioration compounds.</p></div>
+          <div class="card"><h4>Higher profitability visibility</h4><p>Unified views across quote, order, project, customer, and branch levels.</p></div>
+          <div class="card"><h4>Improved approval governance</h4><p>Traceable workflows reduce informal discounting and unauthorized commercial exceptions.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="roadmap">
+        <h3 class="title">Implementation Roadmap</h3>
+        <div class="grid-3">
+          <div class="phase">
+            <h4><span class="num">1</span>Phase 1: Reporting and Dashboards</h4>
+            <ul class="list">
+              <li>Build core profitability dashboards for leadership and branch management.</li>
+              <li>Establish baseline quoted vs actual margin reporting.</li>
+              <li>Align definitions for leakage, risk, and policy thresholds.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <h4><span class="num">2</span>Phase 2: Cost Tracking and Alerts</h4>
+            <ul class="list">
+              <li>Integrate procurement and freight cost feeds.</li>
+              <li>Enable real-time variance tracking and exception alerts.</li>
+              <li>Implement low-margin approval controls with audit logging.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <h4><span class="num">3</span>Phase 3: Predictive Margin Risk Scoring</h4>
+            <ul class="list">
+              <li>Introduce predictive signals for margin-at-risk opportunities.</li>
+              <li>Rank projects by probability of erosion before closure.</li>
+              <li>Operationalize proactive commercial intervention workflows.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="integrations">
+        <h3 class="title">Suggested Data Integrations</h3>
+        <div class="table-wrap">
+          <table aria-label="Data integration matrix">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Purpose</th>
+                <th>Typical Data</th>
+                <th>Impact on MarginCommand</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ERP</td>
+                <td>Financial and operational baseline</td>
+                <td>Orders, invoicing, cost postings, branch financial structures</td>
+                <td>Anchors trusted margin calculations</td>
+              </tr>
+              <tr>
+                <td>Quotation System</td>
+                <td>Commercial intent at bid stage</td>
+                <td>Quoted prices, discounts, target margins, bid metadata</td>
+                <td>Enables quote-to-order variance analysis</td>
+              </tr>
+              <tr>
+                <td>Procurement Records</td>
+                <td>Supplier-side cost movement</td>
+                <td>PO pricing, revisions, rebates, sourcing alternatives</td>
+                <td>Identifies cost-driven margin erosion</td>
+              </tr>
+              <tr>
+                <td>Freight / Logistics Data</td>
+                <td>Fulfillment cost visibility</td>
+                <td>Freight charges, delays, route uplifts, delivery exceptions</td>
+                <td>Captures hidden execution costs in true margin</td>
+              </tr>
+              <tr>
+                <td>Customer Master</td>
+                <td>Account-level profitability context</td>
+                <td>Customer hierarchy, terms, segment, account ownership</td>
+                <td>Supports strategic account margin analysis</td>
+              </tr>
+              <tr>
+                <td>Branch P&amp;L Mapping</td>
+                <td>Organizational performance lens</td>
+                <td>Branch structure, cost allocations, manager ownership</td>
+                <td>Enables consistent branch-level governance</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="architecture">
+        <h3 class="title">Architecture</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Frontend</h4><p>Role-specific profitability dashboards and intervention workbenches for sales, finance, and leadership.</p></div>
+          <div class="card"><h4>Backend</h4><p>Business-rule orchestration for margin calculations, thresholds, and approval routing.</p></div>
+          <div class="card"><h4>DB</h4><p>Unified store for quotes, costs, orders, and historical variance events.</p></div>
+          <div class="card"><h4>Analytics Layer</h4><p>Computes margin trends, leakage patterns, and predictive risk scoring models.</p></div>
+          <div class="card"><h4>Permissions</h4><p>Role-based access controls to protect sensitive commercial and account data.</p></div>
+          <div class="card"><h4>Audit Trail</h4><p>Immutable logs of pricing decisions, overrides, alerts, and approvals.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="strategy">
+        <h3 class="title">Why This Is Strategically Important</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h4>Industrial distributors optimize for service and volume</h4>
+            <p>In project supply environments, teams are rightly focused on availability, responsiveness, and customer commitments. Without dedicated margin controls, these strengths can unintentionally mask profit erosion.</p>
+          </div>
+          <div class="card">
+            <h4>Project-level commercial control is now essential</h4>
+            <p>Complex PVF projects involve changing costs, lead-time shifts, and negotiated discounts. MarginCommand introduces software-level governance that preserves competitiveness while protecting profitability quality.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="roi">
+        <h3 class="title">ROI Indicators (Illustrative Sample Outcomes)</h3>
+        <div class="grid-3">
+          <div class="card">
+            <h4>Reduced unnoticed margin erosion</h4>
+            <p>Earlier detection of cost and pricing drift can reduce silent leakage across high-value projects.</p>
+            <span class="pill illustrative">Illustrative KPI</span>
+          </div>
+          <div class="card">
+            <h4>Faster escalations</h4>
+            <p>Automated alerts and thresholds can shorten response time for at-risk commercial decisions.</p>
+            <span class="pill illustrative">Illustrative KPI</span>
+          </div>
+          <div class="card">
+            <h4>Stronger commercial discipline</h4>
+            <p>Governed approval workflows can improve consistency in discounting and exception handling.</p>
+            <span class="pill illustrative">Illustrative KPI</span>
+          </div>
+        </div>
+        <p class="small-note">All KPI references are sample outcomes for business case discussion and are not guaranteed claims.</p>
+      </section>
+
+      <section class="section footer" id="footer">
+        <div>
+          <h3 style="margin:0 0 6px;">Confidential Concept Note</h3>
+          <div style="font-size:0.88rem; color:rgba(255,255,255,0.9);">Enterprise SaaS for industrial distribution.</div>
+          <div style="font-size:0.84rem; margin-top:6px; color:rgba(255,255,255,0.78);">MarginCommand concept prepared by Stryvon.AI.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

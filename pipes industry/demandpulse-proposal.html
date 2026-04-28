@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DemandPulse - Predictive Inventory & Demand Planning | Stryvon.AI</title>
+  <style>
+    :root {
+      --bg: #f2f5fa;
+      --panel: #ffffff;
+      --panel-2: #f7faff;
+      --ink: #10243b;
+      --ink-soft: #4d6078;
+      --brand: #0e3b67;
+      --brand-2: #1b5a93;
+      --graphite: #1f2f43;
+      --line: #d7e0ea;
+      --accent: #3c99ff;
+      --good: #1a7d58;
+      --warn: #a8641f;
+      --danger: #ab3b3b;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 8px 24px rgba(11, 30, 52, 0.08);
+      --nav-w: 280px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8fbff, #eef3f8);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: var(--nav-w) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background: linear-gradient(160deg, #0c2f50, #133f67 58%, #1f3248);
+      border-right: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      padding: 22px 16px;
+    }
+
+    .brand {
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.4px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .nav-title {
+      margin: 14px 8px 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.86;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: calc(100vh - 240px);
+      overflow: auto;
+    }
+
+    .nav-list a {
+      display: block;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin: 2px 0;
+      font-size: 0.89rem;
+      color: rgba(255, 255, 255, 0.93);
+      border: 1px solid transparent;
+    }
+
+    .nav-list a:hover {
+      background: rgba(255, 255, 255, 0.11);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-weight: 600;
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: center;
+      display: block;
+    }
+
+    .btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+    .main {
+      max-width: 1360px;
+      padding: 24px;
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .hero {
+      color: #fff;
+      background:
+        radial-gradient(circle at 84% 20%, rgba(60, 153, 255, 0.18), transparent 38%),
+        linear-gradient(130deg, #0d3459, #174a77 58%, #23374b);
+      border-color: rgba(255, 255, 255, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      position: absolute;
+      bottom: -110px;
+      right: -80px;
+    }
+
+    .hero-kicker {
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 12px;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.6vw, 2.5rem);
+      line-height: 1.13;
+    }
+
+    .hero .subtitle {
+      margin: 10px 0 0;
+      font-size: 1.08rem;
+      color: rgba(255, 255, 255, 0.95);
+      max-width: 940px;
+    }
+
+    .hero .tagline {
+      margin: 10px 0 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.98);
+    }
+
+    .hero-tags {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .title {
+      margin: 0 0 13px;
+      color: var(--brand);
+      font-size: 1.2rem;
+    }
+
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      background: linear-gradient(180deg, #fff, #fafdff);
+      min-height: 100%;
+    }
+
+    .card h4 {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: 0.98rem;
+    }
+
+    .card p, .list {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.93rem;
+    }
+
+    .list {
+      padding-left: 20px;
+    }
+
+    .list li { margin: 6px 0; }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--panel-2);
+      padding: 12px;
+    }
+
+    .metric .k {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #5f7083;
+      margin-bottom: 7px;
+    }
+
+    .metric .v {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--brand);
+      line-height: 1.2;
+    }
+
+    .metric small {
+      display: block;
+      margin-top: 5px;
+      color: #5d6c7f;
+      font-size: 0.78rem;
+    }
+
+    .chart-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .chart-title {
+      margin: 0 0 8px;
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #4b6179;
+    }
+
+    .legend {
+      margin-top: 8px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: #5d7188;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    .dot.blue { background: #297cd1; }
+    .dot.red { background: #d25959; }
+    .dot.green { background: #2f9f6f; }
+    .dot.orange { background: #d3903f; }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 760px;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 11px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf4fc;
+      color: #123f67;
+      font-weight: 650;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .timeline {
+      border-left: 3px solid #b9d2eb;
+      margin-left: 7px;
+      padding-left: 14px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel-2);
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .step::before {
+      content: "";
+      position: absolute;
+      left: -20px;
+      top: 13px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--brand-2);
+      background: #fff;
+    }
+
+    .step strong { color: var(--brand); }
+
+    .phase {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: linear-gradient(180deg, #fff, #f8fcff);
+      padding: 12px;
+    }
+
+    .phase .n {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 7px;
+      color: #fff;
+      font-size: 0.86rem;
+      background: linear-gradient(140deg, var(--brand), #2768a0);
+    }
+
+    .phase h4 {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: 0.98rem;
+    }
+
+    .pill {
+      display: inline-block;
+      border: 1px solid;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 0.74rem;
+      margin-top: 8px;
+    }
+
+    .pill.estimated {
+      border-color: #9ad7bc;
+      color: #216f4c;
+      background: #e8f7ef;
+    }
+
+    .small-note {
+      margin-top: 8px;
+      font-size: 0.84rem;
+      color: #5f6f82;
+    }
+
+    .footer {
+      color: #fff;
+      background: linear-gradient(135deg, #0e3458, #1f344a);
+      border-color: #264968;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .logo-box {
+      width: 150px;
+      height: 42px;
+      border: 1px dashed rgba(255, 255, 255, 0.45);
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    @media (max-width: 1180px) {
+      :root { --nav-w: 240px; }
+      .dash-grid { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .nav-list {
+        max-height: none;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+      }
+      .main { padding: 15px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .layout { display: block; }
+      .sidebar { display: none; }
+      .main { max-width: 100%; padding: 0; }
+      .section { box-shadow: none; margin: 0 0 12px; }
+      .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>Stryvon.AI</h1>
+        <p>AI Platforms for Industrial Distribution</p>
+      </div>
+      <div class="nav-title">Sections</div>
+      <ul class="nav-list">
+        <li><a href="#hero">Overview</a></li>
+        <li><a href="#challenge">Business Challenge</a></li>
+        <li><a href="#concept">Product Concept</a></li>
+        <li><a href="#modules">Core Modules</a></li>
+        <li><a href="#dashboards">Dashboard Visuals</a></li>
+        <li><a href="#inputs">Data Inputs</a></li>
+        <li><a href="#workflows">Example Workflows</a></li>
+        <li><a href="#value">Value to Business</a></li>
+        <li><a href="#roles">User Roles</a></li>
+        <li><a href="#implementation">Implementation Plan</a></li>
+        <li><a href="#stack">Tech Stack Suggestion</a></li>
+        <li><a href="#roi">ROI & KPI</a></li>
+        <li><a href="#fit">Why It Fits PVF</a></li>
+        <li><a href="#footer">Closing</a></li>
+      </ul>
+      <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+      <a class="btn" href="rfqflow-ai-proposal.html">Open RFQFlow AI Proposal</a>
+    </aside>
+
+    <main class="main">
+      <section class="section hero" id="hero">
+        <div class="hero-kicker">Confidential Concept • Stryvon.AI</div>
+        <h2>DemandPulse</h2>
+        <p class="subtitle">AI-powered demand forecasting and inventory intelligence for industrial distribution.</p>
+        <p class="tagline">Stock smarter, reduce dead inventory, improve service levels.</p>
+        <div class="hero-tags">
+          <span class="tag">PVF Inventory</span>
+          <span class="tag">Multi-Warehouse Planning</span>
+          <span class="tag">Project Demand Readiness</span>
+          <span class="tag">Working Capital Control</span>
+        </div>
+      </section>
+
+      <section class="section" id="challenge">
+        <h3 class="title">Business Challenge</h3>
+        <div class="grid-2">
+          <ul class="list">
+            <li>Excess inventory accumulates in slow-moving material grades, pressure classes, and legacy spec combinations.</li>
+            <li>Fast-moving project materials face frequent shortages during EPC bid conversion periods.</li>
+            <li>Long vendor lead times and mill schedules increase planning risk for critical items.</li>
+          </ul>
+          <ul class="list">
+            <li>Limited branch-to-branch visibility causes duplicate buying while other warehouses hold transferable stock.</li>
+            <li>Demand varies sharply by region, sector, and customer type across oil & gas, power, and industrial accounts.</li>
+            <li>Manual planning cycles struggle to react to demand uncertainty in long-cycle B2B supply operations.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="concept">
+        <h3 class="title">Product Concept</h3>
+        <div class="grid-3">
+          <article class="card"><h4>Demand forecasting by operational dimension</h4><p>Forecasts by SKU, product family, branch, region, and customer segment to support procurement and allocation planning.</p></article>
+          <article class="card"><h4>Reorder timing prediction</h4><p>Projects reorder windows based on demand velocity, lead-time behavior, and service-level targets.</p></article>
+          <article class="card"><h4>Warehouse transfer recommendations</h4><p>Suggests stock transfers to rebalance inventory before new purchase orders are triggered.</p></article>
+          <article class="card"><h4>Dead-stock and slow-mover flags</h4><p>Highlights items with aging risk and proposes branch/channel liquidation options.</p></article>
+          <article class="card"><h4>Project-impact simulation</h4><p>Simulates stock impact from new project wins or major RFQ conversions across time horizons.</p></article>
+          <article class="card"><h4>Shortage risk intelligence</h4><p>Identifies critical materials likely to stock out before committed delivery dates.</p></article>
+        </div>
+      </section>
+
+      <section class="section" id="modules">
+        <h3 class="title">Core Modules</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Demand forecasting engine</h4><p>Combines seasonality, project patterns, and historical order behavior.</p></div>
+          <div class="card"><h4>Reorder recommendation engine</h4><p>Generates suggested buy dates and quantities with confidence bands.</p></div>
+          <div class="card"><h4>Safety stock optimizer</h4><p>Balances service reliability against working-capital constraints.</p></div>
+          <div class="card"><h4>Branch balancing / stock transfer suggestions</h4><p>Reduces excess purchases through transfer-aware planning.</p></div>
+          <div class="card"><h4>Inventory aging dashboard</h4><p>Tracks dead stock and liquidation risk by material family and location.</p></div>
+          <div class="card"><h4>Supplier lead-time intelligence</h4><p>Monitors variability and late-risk trends by vendor and commodity.</p></div>
+          <div class="card"><h4>Scenario planning module</h4><p>Tests effects of major project wins, demand spikes, and delays.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="dashboards">
+        <h3 class="title">Dashboard Visuals</h3>
+        <div class="dash-grid">
+          <div class="chart-card">
+            <p class="chart-title">Forecast Accuracy Trend</p>
+            <svg viewBox="0 0 380 170" width="100%" height="170" role="img" aria-label="Forecast accuracy line chart">
+              <rect x="0" y="0" width="380" height="170" fill="#f9fcff" />
+              <line x1="35" y1="25" x2="35" y2="145" stroke="#b8c9dc" stroke-width="1"/>
+              <line x1="35" y1="145" x2="360" y2="145" stroke="#b8c9dc" stroke-width="1"/>
+              <polyline points="35,112 90,102 145,88 200,78 255,71 310,64 360,58" fill="none" stroke="#2c7fd3" stroke-width="3"/>
+              <polyline points="35,120 90,109 145,97 200,90 255,85 310,79 360,74" fill="none" stroke="#5ca7f5" stroke-width="2" stroke-dasharray="6 4"/>
+              <text x="36" y="20" fill="#57708a" font-size="11">Accuracy %</text>
+              <text x="330" y="160" fill="#57708a" font-size="11">Month</text>
+            </svg>
+            <div class="legend">
+              <span><span class="dot blue"></span>Actual Accuracy</span>
+              <span><span class="dot green"></span>Target Band</span>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <p class="chart-title">Inventory Aging Mix</p>
+            <svg viewBox="0 0 380 170" width="100%" height="170" role="img" aria-label="Inventory aging bar chart">
+              <rect x="0" y="0" width="380" height="170" fill="#f9fcff" />
+              <line x1="35" y1="20" x2="35" y2="145" stroke="#b8c9dc" />
+              <line x1="35" y1="145" x2="360" y2="145" stroke="#b8c9dc" />
+              <rect x="60" y="92" width="42" height="53" fill="#2f9f6f" rx="3"/>
+              <rect x="120" y="70" width="42" height="75" fill="#4f90d0" rx="3"/>
+              <rect x="180" y="52" width="42" height="93" fill="#d3903f" rx="3"/>
+              <rect x="240" y="36" width="42" height="109" fill="#d25959" rx="3"/>
+              <rect x="300" y="26" width="42" height="119" fill="#7f5ea7" rx="3"/>
+              <text x="54" y="160" fill="#57708a" font-size="11">0-90d</text>
+              <text x="114" y="160" fill="#57708a" font-size="11">91-180</text>
+              <text x="174" y="160" fill="#57708a" font-size="11">181-270</text>
+              <text x="233" y="160" fill="#57708a" font-size="11">271-365</text>
+              <text x="296" y="160" fill="#57708a" font-size="11">365+</text>
+            </svg>
+            <div class="legend">
+              <span><span class="dot green"></span>Healthy</span>
+              <span><span class="dot orange"></span>Watch</span>
+              <span><span class="dot red"></span>At Risk</span>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <p class="chart-title">Top 20 Critical SKUs</p>
+            <div class="metric">
+              <div class="k">Critical SKU Risk Index</div>
+              <div class="v">78 / 100</div>
+              <small>8 items below 14-day cover</small>
+            </div>
+            <div class="metric" style="margin-top:10px;">
+              <div class="k">High-Risk Families</div>
+              <div class="v">CS Flanges, Gate Valves</div>
+              <small>Driven by project-led demand spikes</small>
+            </div>
+            <div class="metric" style="margin-top:10px;">
+              <div class="k">Expedite Exposure</div>
+              <div class="v">$420k</div>
+              <small>Potential emergency procurement value</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top:12px;">
+          <div class="metric"><div class="k">Forecast Accuracy</div><div class="v">86.2%</div><small>Rolling 12-week weighted</small></div>
+          <div class="metric"><div class="k">Stockout Risk</div><div class="v">27 SKUs</div><small>Likely within 21 days</small></div>
+          <div class="metric"><div class="k">Overstock Value</div><div class="v">$6.1M</div><small>Estimated tied-up capital</small></div>
+          <div class="metric"><div class="k">Service Level by Warehouse</div><div class="v">89% - 97%</div><small>Network variance across sites</small></div>
+          <div class="metric"><div class="k">Lead Time Variability</div><div class="v">+/- 18 days</div><small>Critical vendor volatility window</small></div>
+          <div class="metric"><div class="k">Inventory Aging</div><div class="v">22% &gt; 180d</div><small>Needs remediation strategy</small></div>
+        </div>
+        <p class="small-note">Dashboard values are illustrative for concept demonstration.</p>
+      </section>
+
+      <section class="section" id="inputs">
+        <h3 class="title">Data Inputs</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Historical orders</h4><p>Order frequency, quantity trends, customer cadence, and repeat patterns.</p></div>
+          <div class="card"><h4>RFQ trends</h4><p>Emerging demand signals before conversion to firm purchase orders.</p></div>
+          <div class="card"><h4>Sales pipeline</h4><p>Opportunity stages and expected close windows for project-driven demand.</p></div>
+          <div class="card"><h4>Supplier lead times</h4><p>Actual vs promised lead-time behavior by vendor and category.</p></div>
+          <div class="card"><h4>Inventory levels</h4><p>On-hand, allocated, and available stock by branch and warehouse.</p></div>
+          <div class="card"><h4>Open purchase orders</h4><p>Incoming replenishment and expected receipt timing constraints.</p></div>
+          <div class="card"><h4>Branch-level movements</h4><p>Transfers, returns, and inter-branch balancing history for optimization.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="workflows">
+        <h3 class="title">Example Workflows</h3>
+        <div class="timeline">
+          <div class="step"><strong>Reorder planning:</strong> system proposes reorder date and quantity per SKU based on target service level, lead-time uncertainty, and demand forecast confidence.</div>
+          <div class="step"><strong>Inter-warehouse transfer recommendation:</strong> identifies surplus in one branch and shortage in another, with transfer vs buy cost comparison.</div>
+          <div class="step"><strong>Shortage prediction before project delivery:</strong> flags potential material gaps before committed customer delivery milestones.</div>
+          <div class="step"><strong>Dead stock liquidation insight:</strong> surfaces slow movers and recommends discounting, cross-branch redeployment, or alternate customer targeting.</div>
+        </div>
+      </section>
+
+      <section class="section" id="value">
+        <h3 class="title">Value to the Business</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Better working capital utilization</h4><p>Reduces capital lockup in low-velocity grades while protecting availability for high-demand materials.</p></div>
+          <div class="card"><h4>Lower stockouts</h4><p>Improves proactive coverage planning for critical SKUs with long replenishment lead times.</p></div>
+          <div class="card"><h4>Less emergency buying</h4><p>Reduces premium freight and expedite purchases caused by late demand visibility.</p></div>
+          <div class="card"><h4>Better warehouse planning</h4><p>Creates coordinated network-level inventory behavior across branches and hubs.</p></div>
+          <div class="card"><h4>Stronger service reliability</h4><p>Supports consistent fulfillment performance for strategic B2B accounts and projects.</p></div>
+          <div class="card"><h4>Faster planning cycles</h4><p>Replaces manual spreadsheet cycles with continuous signal-based recommendations.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="roles">
+        <h3 class="title">User Roles</h3>
+        <div class="grid-2">
+          <div class="card"><h4>Supply Chain Manager</h4><p>Owns service-level targets, policy settings, and network planning decisions.</p></div>
+          <div class="card"><h4>Procurement Head</h4><p>Aligns reorder execution with supplier strategy and commercial terms.</p></div>
+          <div class="card"><h4>Warehouse Controller</h4><p>Monitors local aging, transfer tasks, and stock allocation discipline.</p></div>
+          <div class="card"><h4>Branch Operations Manager</h4><p>Balances local customer demand with enterprise inventory governance.</p></div>
+          <div class="card"><h4>Executive Leadership</h4><p>Tracks working capital, service performance, and risk exposure at portfolio level.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="implementation">
+        <h3 class="title">Implementation Plan</h3>
+        <div class="grid-3">
+          <div class="phase">
+            <h4><span class="n">1</span>Phase 1: Dashboards and Stock Visibility</h4>
+            <ul class="list">
+              <li>Unify inventory and movement visibility across warehouses.</li>
+              <li>Launch baseline KPIs for aging, stockouts, and service levels.</li>
+              <li>Create branch/region executive scorecards.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <h4><span class="n">2</span>Phase 2: Forecast Engine</h4>
+            <ul class="list">
+              <li>Deploy SKU/category forecast models with confidence intervals.</li>
+              <li>Tune by region, customer segment, and project pattern.</li>
+              <li>Benchmark forecast quality against existing planning method.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <h4><span class="n">3</span>Phase 3: Recommendations and Automation</h4>
+            <ul class="list">
+              <li>Enable reorder and transfer recommendation workflows.</li>
+              <li>Integrate approval controls and exception handling.</li>
+              <li>Operationalize continuous learning from outcomes.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="stack">
+        <h3 class="title">Tech Stack Suggestion</h3>
+        <div class="table-wrap">
+          <table aria-label="Technology stack suggestion">
+            <thead>
+              <tr>
+                <th>Layer</th>
+                <th>Recommended Capability</th>
+                <th>Industrial Deployment Consideration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Frontend</td>
+                <td>Web planning workbench and executive dashboards</td>
+                <td>Role-tailored workflows for planners, branches, and leadership</td>
+              </tr>
+              <tr>
+                <td>Backend</td>
+                <td>Recommendation API and decision orchestration layer</td>
+                <td>Supports planning cadence, exceptions, and approvals</td>
+              </tr>
+              <tr>
+                <td>Database</td>
+                <td>Time-series + relational model for inventory and demand events</td>
+                <td>Required for branch-level traceability and trend analysis</td>
+              </tr>
+              <tr>
+                <td>Forecasting Engine</td>
+                <td>Hybrid statistical/ML forecasting with scenario simulation</td>
+                <td>Must account for project spikes and long-tail SKU behavior</td>
+              </tr>
+              <tr>
+                <td>API Integrations</td>
+                <td>ERP, CRM, RFQ platform, supplier and warehouse systems</td>
+                <td>Ensures planning outcomes are executable in live operations</td>
+              </tr>
+              <tr>
+                <td>Role-based Access</td>
+                <td>SSO, RBAC, and approval policy controls</td>
+                <td>Protects commercial data and enforces governance</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="roi">
+        <h3 class="title">ROI and KPI Indicators (Illustrative)</h3>
+        <div class="grid-4">
+          <div class="card">
+            <h4>Lower Stockouts</h4>
+            <p>Potential reduction in critical stockout events through proactive planning windows.</p>
+            <span class="pill estimated">Illustrative Estimate</span>
+          </div>
+          <div class="card">
+            <h4>Reduced Dead Stock</h4>
+            <p>Potential decrease in aged inventory through transfer and liquidation recommendations.</p>
+            <span class="pill estimated">Illustrative Estimate</span>
+          </div>
+          <div class="card">
+            <h4>Improved Fill Rate</h4>
+            <p>Potential improvement in order fulfillment consistency for project and maintenance demand.</p>
+            <span class="pill estimated">Illustrative Estimate</span>
+          </div>
+          <div class="card">
+            <h4>Reduced Expedited Procurement</h4>
+            <p>Potential drop in emergency buys caused by late visibility of material gaps.</p>
+            <span class="pill estimated">Illustrative Estimate</span>
+          </div>
+        </div>
+        <p class="small-note">KPI examples are directional and should be validated during discovery; they are not guaranteed outcomes.</p>
+      </section>
+
+      <section class="section" id="fit">
+        <h3 class="title">Why This Fits a Global PVF Supplier</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h4>Designed for high-value, long-cycle material categories</h4>
+            <p>DemandPulse is built for industrial product structures where procurement lead times, minimum buys, and grade/class variants materially affect capital and service performance.</p>
+          </div>
+          <div class="card">
+            <h4>Optimized for multi-branch distribution networks</h4>
+            <p>The platform supports balancing decisions across regional warehouses, reducing duplicate purchases and improving network-level stock utilization.</p>
+          </div>
+          <div class="card">
+            <h4>Handles varied technical grades and demand volatility</h4>
+            <p>It accounts for differences across carbon steel, stainless, alloy, valve classes, and project-driven demand spikes that generic retail planning tools miss.</p>
+          </div>
+          <div class="card">
+            <h4>Aligns inventory with B2B service commitments</h4>
+            <p>Recommendations prioritize customer delivery reliability and commercial commitments for large industrial accounts, not just generic turns optimization.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section footer" id="footer">
+        <div>
+          <h3 style="margin:0 0 6px;">Confidential SaaS Concept</h3>
+          <div style="font-size:0.88rem; color:rgba(255,255,255,0.9);">Prepared for enterprise industrial distribution discussion.</div>
+          <div style="font-size:0.84rem; margin-top:6px; color:rgba(255,255,255,0.78);">Concept: DemandPulse • Presented by Stryvon.AI</div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

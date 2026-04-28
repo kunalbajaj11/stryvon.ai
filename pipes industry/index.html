@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stryvon.AI Industrial SaaS Portfolio</title>
+  <style>
+    :root {
+      --bg: #f3f7fc;
+      --panel: #ffffff;
+      --ink: #12263f;
+      --ink-soft: #4f657d;
+      --brand: #12406a;
+      --brand-2: #2a6ea8;
+      --line: #d8e2ed;
+      --accent: #3a93e8;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 10px 28px rgba(12, 30, 50, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8fbff, #eef4fa);
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 26px 18px 34px;
+    }
+
+    .hero {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      color: #fff;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(58, 147, 232, 0.18), transparent 36%),
+        linear-gradient(130deg, #10385f, #1a4f79 58%, #243a4d);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .kicker {
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.36);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.65rem, 2.6vw, 2.3rem);
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      max-width: 900px;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .meta {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.79rem;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .section {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      color: var(--brand);
+      font-size: 1.12rem;
+    }
+
+    .path {
+      display: grid;
+      gap: 10px;
+    }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: linear-gradient(180deg, #fff, #fafdff);
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: linear-gradient(140deg, var(--brand), var(--brand-2));
+    }
+
+    .title {
+      margin: 0;
+      color: var(--brand);
+      font-size: 0.98rem;
+      font-weight: 650;
+    }
+
+    .desc {
+      margin: 3px 0 0;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    .open {
+      border: 1px solid #bfd6ec;
+      color: #12406a;
+      background: #eef6ff;
+      border-radius: 9px;
+      padding: 8px 11px;
+      font-weight: 600;
+      font-size: 0.84rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .open:hover {
+      background: #e3f0fe;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .quick-links a {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fbff;
+      padding: 8px 10px;
+      font-size: 0.84rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .quick-links a:hover {
+      border-color: #bfd6ec;
+      color: var(--brand);
+      background: #eef6ff;
+    }
+
+    .accordion {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .acc-item {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: linear-gradient(180deg, #fff, #fafdff);
+      overflow: hidden;
+    }
+
+    .acc-item summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 14px;
+      color: var(--brand);
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .acc-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .acc-item summary::after {
+      content: "+";
+      font-weight: 700;
+      color: var(--brand-2);
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .acc-item[open] summary::after {
+      content: "-";
+    }
+
+    .acc-body {
+      border-top: 1px solid var(--line);
+      padding: 12px 14px;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    .acc-body p {
+      margin: 0 0 8px;
+    }
+
+    .acc-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .acc-body ul {
+      margin: 0 0 8px;
+      padding-left: 18px;
+    }
+
+    .acc-body ul:last-child {
+      margin-bottom: 0;
+    }
+
+    .foot {
+      margin-top: 14px;
+      border: 1px solid #2a4d6f;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #10385f, #22384c);
+      color: #fff;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 860px) {
+      .item {
+        grid-template-columns: 36px 1fr;
+      }
+
+      .open {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .quick-links {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .quick-links {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .wrap {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .section, .hero, .foot {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker">Stryvon.AI • Industrial SaaS Suite</div>
+      <h1>Industrial PVF SaaS Proposal Portfolio</h1>
+      <p>This entrance page provides the recommended sequence to review the proposal set for pipes, valves, fittings, flanges, and industrial materials distribution transformation.</p>
+      <div class="meta">
+        <span class="tag">Executive Review Ready</span>
+        <span class="tag">Single-File Proposals</span>
+        <span class="tag">Print-to-PDF Friendly</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Recommended Sequential Review</h2>
+      <div class="path">
+        <article class="item">
+          <span class="num">1</span>
+          <div>
+            <p class="title">RFQFlow AI</p>
+            <p class="desc">RFQ automation and quote standardization foundation.</p>
+          </div>
+          <a class="open" href="rfqflow-ai-proposal.html">Open Page</a>
+        </article>
+
+        <article class="item">
+          <span class="num">2</span>
+          <div>
+            <p class="title">DemandPulse</p>
+            <p class="desc">Predictive demand planning and inventory optimization.</p>
+          </div>
+          <a class="open" href="demandpulse-proposal.html">Open Page</a>
+        </article>
+
+        <article class="item">
+          <span class="num">3</span>
+          <div>
+            <p class="title">MarginCommand</p>
+            <p class="desc">Project-level profitability and margin governance.</p>
+          </div>
+          <a class="open" href="margincommand-proposal.html">Open Page</a>
+        </article>
+
+        <article class="item">
+          <span class="num">4</span>
+          <div>
+            <p class="title">TransitLens</p>
+            <p class="desc">Logistics visibility and proactive delivery risk intelligence.</p>
+          </div>
+          <a class="open" href="transitlens-proposal.html">Open Page</a>
+        </article>
+
+        <article class="item">
+          <span class="num">5</span>
+          <div>
+            <p class="title">DocTrace</p>
+            <p class="desc">Quality, compliance, and material documentation automation.</p>
+          </div>
+          <a class="open" href="doctrace-proposal.html">Open Page</a>
+        </article>
+
+        <article class="item">
+          <span class="num">6</span>
+          <div>
+            <p class="title">AccountSignal</p>
+            <p class="desc">Account intelligence and strategic B2B growth targeting.</p>
+          </div>
+          <a class="open" href="accountsignal-proposal.html">Open Page</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Simple Summary of Each SaaS Idea</h2>
+      <div class="accordion">
+        <details class="acc-item" open>
+          <summary>1) Smart RFQ Automation (Most Important One)</summary>
+          <div class="acc-body">
+            <p><strong>In simple words:</strong> When a client asks for a quote (for example 1000 pipes with specific sizes and materials), teams often process it manually.</p>
+            <p><strong>This software will:</strong></p>
+            <ul>
+              <li>Read the request automatically from PDF and email.</li>
+              <li>Understand required materials and specifications.</li>
+              <li>Suggest best suppliers and pricing options.</li>
+              <li>Create a ready quotation draft.</li>
+            </ul>
+            <p><strong>One-line explanation:</strong> "It is like a smart assistant that prepares quotations for your team in minutes instead of hours."</p>
+            <p><strong>Why they will like it:</strong> Faster client replies, better win probability, and less dependency on specific employees.</p>
+          </div>
+        </details>
+
+        <details class="acc-item">
+          <summary>2) Predictive Inventory (Smart Stock Planning)</summary>
+          <div class="acc-body">
+            <p><strong>In simple words:</strong> Teams currently estimate what stock to keep, often without predictive support.</p>
+            <p><strong>This software will:</strong></p>
+            <ul>
+              <li>Analyze past orders and demand trends.</li>
+              <li>Predict which items will be needed soon.</li>
+              <li>Recommend what to stock and where.</li>
+            </ul>
+            <p><strong>One-line explanation:</strong> "It tells you what to buy before your customers even ask for it."</p>
+            <p><strong>Why they will like it:</strong> Less dead stock, fewer panic purchases, and healthier cash flow.</p>
+          </div>
+        </details>
+
+        <details class="acc-item">
+          <summary>3) Project Profitability Tracker</summary>
+          <div class="acc-body">
+            <p><strong>In simple words:</strong> Revenue is visible, but deal-level profit is not always clear once costs shift.</p>
+            <p><strong>This software will:</strong></p>
+            <ul>
+              <li>Track cost versus selling price for every order.</li>
+              <li>Include hidden costs like shipping delays and supplier price changes.</li>
+              <li>Show whether each deal is profitable or loss-making.</li>
+            </ul>
+            <p><strong>One-line explanation:</strong> "It shows you which deals are actually making money and which are silently losing it."</p>
+            <p><strong>Why they will like it:</strong> Fewer loss-making projects, stronger pricing decisions, and tighter margin control.</p>
+          </div>
+        </details>
+
+        <details class="acc-item">
+          <summary>4) Logistics Visibility (Shipment Tracking System)</summary>
+          <div class="acc-body">
+            <p><strong>In simple words:</strong> Once goods are shipped, tracking updates are often scattered and difficult to manage.</p>
+            <p><strong>This software will:</strong></p>
+            <ul>
+              <li>Show where every shipment is in one control tower.</li>
+              <li>Predict delays before they happen.</li>
+              <li>Alert internal teams and customers proactively.</li>
+            </ul>
+            <p><strong>One-line explanation:</strong> "It gives you a live control room for all your shipments."</p>
+            <p><strong>Why they will like it:</strong> Fewer complaints, stronger delivery reliability, and less operational chaos.</p>
+          </div>
+        </details>
+
+        <details class="acc-item">
+          <summary>5) AI Sales Intelligence (Smart Customer Insights)</summary>
+          <div class="acc-body">
+            <p><strong>In simple words:</strong> Sales teams often rely heavily on memory and personal relationships for account decisions.</p>
+            <p><strong>This software will:</strong></p>
+            <ul>
+              <li>Identify customers likely to order soon.</li>
+              <li>Recommend what to sell and to which accounts.</li>
+              <li>Surface inactive customers for reactivation follow-up.</li>
+            </ul>
+            <p><strong>One-line explanation:</strong> "It tells your sales team exactly who to call and what to sell."</p>
+            <p><strong>Why they will like it:</strong> More repeat business, better time usage, and higher revenue from existing accounts.</p>
+          </div>
+        </details>
+
+        <details class="acc-item">
+          <summary>6) Documentation &amp; Compliance Automation</summary>
+          <div class="acc-body">
+            <p><strong>In simple words:</strong> Managing certificates, reports, and compliance approvals is often slow and manual.</p>
+            <p><strong>This software will:</strong></p>
+            <ul>
+              <li>Store all critical documents in one place.</li>
+              <li>Automatically organize and validate them.</li>
+              <li>Generate complete customer-ready document packs.</li>
+            </ul>
+            <p><strong>One-line explanation:</strong> "It organizes all your technical documents automatically and keeps everything audit-ready."</p>
+            <p><strong>Why they will like it:</strong> Faster documentation cycles, less manual effort, and stronger compliance readiness.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Quick Access Links</h2>
+      <div class="quick-links">
+        <a href="rfqflow-ai-proposal.html">RFQFlow AI</a>
+        <a href="demandpulse-proposal.html">DemandPulse</a>
+        <a href="margincommand-proposal.html">MarginCommand</a>
+        <a href="transitlens-proposal.html">TransitLens</a>
+        <a href="doctrace-proposal.html">DocTrace</a>
+        <a href="accountsignal-proposal.html">AccountSignal</a>
+      </div>
+    </section>
+
+    <section class="foot">
+      Confidential portfolio index prepared for industrial enterprise discussion. Presenter: Kunal Bajaj.
+    </section>
+  </main>
+</body>
+</html>

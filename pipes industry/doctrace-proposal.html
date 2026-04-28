@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DocTrace - Quality, Compliance & Material Documentation Automation | Stryvon.AI</title>
+  <style>
+    :root {
+      --bg: #f3f7fc;
+      --panel: #ffffff;
+      --panel-soft: #f8fbff;
+      --ink: #122740;
+      --ink-soft: #50657d;
+      --brand: #11416a;
+      --brand-2: #2a6ea7;
+      --graphite: #24384c;
+      --line: #d8e2ed;
+      --good: #1f845a;
+      --warn: #aa691f;
+      --risk: #af4343;
+      --accent: #3a93e8;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 8px 24px rgba(10, 30, 50, 0.08);
+      --nav-w: 280px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f8fbff, #edf3f9);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: var(--nav-w) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px 16px;
+      background: linear-gradient(160deg, #0f3458, #17486f 58%, #243a4d);
+      color: #fff;
+      border-right: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .brand {
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.4px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .nav-title {
+      margin: 14px 8px 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.86;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: calc(100vh - 250px);
+      overflow: auto;
+    }
+
+    .nav-list a {
+      display: block;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin: 2px 0;
+      font-size: 0.89rem;
+      color: rgba(255, 255, 255, 0.93);
+      border: 1px solid transparent;
+    }
+
+    .nav-list a:hover {
+      background: rgba(255, 255, 255, 0.11);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-weight: 600;
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: center;
+      display: block;
+    }
+
+    .btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+    .main {
+      max-width: 1360px;
+      padding: 24px;
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .title {
+      margin: 0 0 13px;
+      color: var(--brand);
+      font-size: 1.2rem;
+      letter-spacing: 0.01em;
+    }
+
+    .hero {
+      color: #fff;
+      background:
+        radial-gradient(circle at 86% 20%, rgba(58, 147, 232, 0.19), transparent 38%),
+        linear-gradient(130deg, #10385f, #1a4f79 58%, #243a4d);
+      border-color: rgba(255, 255, 255, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      right: -90px;
+      bottom: -110px;
+    }
+
+    .hero-kicker {
+      display: inline-block;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 12px;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 2.6vw, 2.5rem);
+      line-height: 1.13;
+    }
+
+    .hero .subtitle {
+      margin: 10px 0 0;
+      font-size: 1.08rem;
+      color: rgba(255, 255, 255, 0.95);
+      max-width: 940px;
+    }
+
+    .hero .tagline {
+      margin: 10px 0 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.99);
+    }
+
+    .hero-tags {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      background: linear-gradient(180deg, #fff, #fafdff);
+      min-height: 100%;
+    }
+
+    .card h4 {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: 0.98rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.93rem;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--ink-soft);
+      font-size: 0.93rem;
+    }
+
+    .list li { margin: 6px 0; }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--panel-soft);
+      padding: 12px;
+    }
+
+    .kpi .k {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #5e7085;
+      margin-bottom: 7px;
+    }
+
+    .kpi .v {
+      font-size: 1.24rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .kpi small {
+      display: block;
+      margin-top: 5px;
+      color: #5f7083;
+      font-size: 0.78rem;
+    }
+
+    .doc-widgets {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .doc {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px;
+      background: #fff;
+    }
+
+    .doc .head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 0.84rem;
+      color: #4f647d;
+    }
+
+    .doc .id {
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 0.92rem;
+    }
+
+    .pill {
+      border: 1px solid;
+      border-radius: 999px;
+      padding: 2px 7px;
+      font-size: 0.72rem;
+      white-space: nowrap;
+    }
+
+    .pill.good {
+      border-color: #98d8ba;
+      background: #e8f8ef;
+      color: #216f4b;
+    }
+
+    .pill.warn {
+      border-color: #f1cb99;
+      background: #fff5ea;
+      color: #9a5b16;
+    }
+
+    .pill.risk {
+      border-color: #e4a7a7;
+      background: #fff0f0;
+      color: #983737;
+    }
+
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .timeline {
+      border-left: 3px solid #b8d1eb;
+      margin-left: 6px;
+      padding-left: 14px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel-soft);
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .step::before {
+      content: "";
+      position: absolute;
+      left: -20px;
+      top: 13px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--brand-2);
+      background: #fff;
+    }
+
+    .step strong { color: var(--brand); }
+
+    .checklist {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    .check .dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #8cb7de;
+      position: relative;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .check.done .dot {
+      border-color: #73bd97;
+      background: #e8f8ef;
+    }
+
+    .check.done .dot::after {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 4px;
+      border-left: 2px solid #2f8f65;
+      border-bottom: 2px solid #2f8f65;
+      transform: rotate(-45deg);
+      left: 4px;
+      top: 4px;
+    }
+
+    .phase {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: linear-gradient(180deg, #fff, #f9fcff);
+      padding: 12px;
+    }
+
+    .phase .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 7px;
+      color: #fff;
+      font-size: 0.86rem;
+      background: linear-gradient(140deg, var(--brand), #2a6da4);
+    }
+
+    .phase h4 {
+      margin: 0 0 8px;
+      color: var(--brand);
+      font-size: 0.98rem;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 11px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf4fc;
+      color: #123f67;
+      font-weight: 650;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .roi {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .roi .card .label {
+      display: inline-block;
+      margin-top: 8px;
+      border: 1px solid #98d8ba;
+      background: #e8f8ef;
+      color: #216f4b;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 0.74rem;
+    }
+
+    .small-note {
+      margin-top: 8px;
+      font-size: 0.84rem;
+      color: #5f6f82;
+    }
+
+    .footer {
+      color: #fff;
+      background: linear-gradient(136deg, #10385e, #22384c);
+      border-color: #274a68;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .logo-box {
+      width: 150px;
+      height: 42px;
+      border: 1px dashed rgba(255, 255, 255, 0.45);
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    @media (max-width: 1240px) {
+      :root { --nav-w: 236px; }
+      .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .doc-widgets { grid-template-columns: 1fr; }
+      .workflow-grid { grid-template-columns: 1fr; }
+      .roi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .nav-list {
+        max-height: none;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+      }
+      .main { padding: 15px; }
+      .grid-2, .grid-3, .grid-4, .kpis, .roi { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .layout { display: block; }
+      .sidebar { display: none; }
+      .main { max-width: 100%; padding: 0; }
+      .section { box-shadow: none; margin: 0 0 12px; }
+      .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>Stryvon.AI</h1>
+        <p>Enterprise AI Platforms for Industrial Distribution</p>
+      </div>
+      <div class="nav-title">Proposal Sections</div>
+      <ul class="nav-list">
+        <li><a href="#hero">Overview</a></li>
+        <li><a href="#problem">Problem Statement</a></li>
+        <li><a href="#overview">Product Overview</a></li>
+        <li><a href="#modules">Core Modules</a></li>
+        <li><a href="#dashboard">Dashboard Ideas</a></li>
+        <li><a href="#workflow">Workflow</a></li>
+        <li><a href="#roles">User Roles</a></li>
+        <li><a href="#value">Business Value</a></li>
+        <li><a href="#integrations">Integrations</a></li>
+        <li><a href="#phases">Implementation Phases</a></li>
+        <li><a href="#architecture">Suggested Architecture</a></li>
+        <li><a href="#fit">Why It Matters in Industrial Distribution</a></li>
+        <li><a href="#kpi">KPI Outcomes</a></li>
+        <li><a href="#footer">Closing</a></li>
+      </ul>
+      <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+      <a class="btn" href="accountsignal-proposal.html">Open AccountSignal Proposal</a>
+    </aside>
+
+    <main class="main">
+      <section class="section hero" id="hero">
+        <div class="hero-kicker">Confidential Concept • Stryvon.AI</div>
+        <h2>DocTrace</h2>
+        <p class="subtitle">Automated quality and compliance documentation for industrial material supply.</p>
+        <p class="tagline">Turn complex documentation into a competitive advantage.</p>
+        <div class="hero-tags">
+          <span class="tag">MTC & Compliance Automation</span>
+          <span class="tag">Project Documentation Control</span>
+          <span class="tag">Traceability by Heat/Batch</span>
+          <span class="tag">Audit-Ready Operations</span>
+        </div>
+      </section>
+
+      <section class="section" id="problem">
+        <h3 class="title">Problem Statement</h3>
+        <div class="grid-2">
+          <ul class="list">
+            <li>Material test certificates, inspection reports, and vendor documentation are often scattered across email threads, folders, and branch systems.</li>
+            <li>Teams spend disproportionate time chasing suppliers for missing quality and compliance documents.</li>
+            <li>Manual validation of heat numbers, grades, and standards causes avoidable delays in order release and project closeout.</li>
+          </ul>
+          <ul class="list">
+            <li>Customers expect quick, accurate document packs for acceptance, QA records, and regulatory handover.</li>
+            <li>Limited traceability across order lines, project deliveries, and supplier records creates execution and credibility risk.</li>
+            <li>Without structured control, documentation quality becomes a bottleneck in high-value industrial deliveries.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section" id="overview">
+        <h3 class="title">Product Overview</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Central industrial documentation repository</h4><p>Stores MTCs, inspection reports, vendor declarations, and delivery records in one controlled platform.</p></div>
+          <div class="card"><h4>Deep operational tagging</h4><p>Tags by order, project, SKU, heat number, batch, supplier, and customer for precise retrieval.</p></div>
+          <div class="card"><h4>Validation workflows</h4><p>Runs rule-based checks for mandatory fields, standards compliance, and document completeness.</p></div>
+          <div class="card"><h4>Missing-document alerts</h4><p>Flags pending documentation gaps before dispatch or customer handover milestones.</p></div>
+          <div class="card"><h4>Customer-ready document packs</h4><p>Builds structured, branded packs aligned to project and contractual documentation requirements.</p></div>
+          <div class="card"><h4>Audit-ready traceability</h4><p>Maintains immutable history from supplier upload through internal approval and customer release.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="modules">
+        <h3 class="title">Core Modules</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Document ingestion</h4><p>Captures files from supplier submissions, email intake, and internal uploads.</p></div>
+          <div class="card"><h4>Metadata extraction</h4><p>Extracts heat numbers, material grades, standards, and references automatically.</p></div>
+          <div class="card"><h4>Compliance checklist engine</h4><p>Applies project and customer-specific documentation rules per order line.</p></div>
+          <div class="card"><h4>Approval workflow</h4><p>Routes QA/QC and operations reviews with clear accountability and SLA tracking.</p></div>
+          <div class="card"><h4>Document pack builder</h4><p>Compiles complete order/project packages with version control and release status.</p></div>
+          <div class="card"><h4>Search and traceability</h4><p>Finds records instantly using operational identifiers and compliance metadata.</p></div>
+          <div class="card"><h4>Customer document portal</h4><p>Provides secure customer access to approved packs and revision history.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="dashboard">
+        <h3 class="title">Dashboard Ideas</h3>
+        <div class="kpis">
+          <div class="kpi"><div class="k">Missing Documents by Project</div><div class="v">63</div><small>Across 18 active projects</small></div>
+          <div class="kpi"><div class="k">Pending Approvals</div><div class="v">41</div><small>QA/QC queue awaiting review</small></div>
+          <div class="kpi"><div class="k">Expiring Certifications</div><div class="v">12</div><small>Vendor certs nearing validity end</small></div>
+          <div class="kpi"><div class="k">Supplier Compliance Score</div><div class="v">84%</div><small>Average across strategic vendors</small></div>
+          <div class="kpi"><div class="k">Customer Packs Ready</div><div class="v">29</div><small>Prepared for dispatch today</small></div>
+          <div class="kpi"><div class="k">Audit Readiness Index</div><div class="v">91 / 100</div><small>Based on completeness and traceability</small></div>
+        </div>
+
+        <div class="doc-widgets">
+          <div class="doc">
+            <div class="head"><span class="id">Project: Refinery Turnaround 7A</span><span class="pill warn">Missing 3 Docs</span></div>
+            <p style="margin:0; color:#4f637c; font-size:0.87rem;">Pending MTC for A105 flanges and PMI report for valve package.</p>
+          </div>
+          <div class="doc">
+            <div class="head"><span class="id">Order: SO-99231 / Batch HN-4482</span><span class="pill good">Pack Ready</span></div>
+            <p style="margin:0; color:#4f637c; font-size:0.87rem;">Full inspection dossier validated and approved for customer portal release.</p>
+          </div>
+          <div class="doc">
+            <div class="head"><span class="id">Supplier: EastForge Metals</span><span class="pill risk">Compliance Risk</span></div>
+            <p style="margin:0; color:#4f637c; font-size:0.87rem;">Repeated late submissions for EN10204 3.1 certificates in current quarter.</p>
+          </div>
+        </div>
+        <p class="small-note">Dashboard values are illustrative for concept presentation.</p>
+      </section>
+
+      <section class="section" id="workflow">
+        <h3 class="title">Workflow</h3>
+        <div class="workflow-grid">
+          <div>
+            <div class="timeline">
+              <div class="step"><strong>1. Supplier uploads docs:</strong> certificates and inspection files arrive via portal, email, or structured API feed.</div>
+              <div class="step"><strong>2. System tags and validates:</strong> OCR/metadata extraction links each file to order, heat, batch, and supplier context.</div>
+              <div class="step"><strong>3. Internal reviewer approves:</strong> QA/QC confirms technical compliance, completeness, and release readiness.</div>
+              <div class="step"><strong>4. Customer pack generated:</strong> approved files are compiled into project-specific handover packages.</div>
+              <div class="step"><strong>5. Full traceability retained:</strong> every change, approval, and dispatch action is logged for audit defense.</div>
+            </div>
+          </div>
+          <div class="checklist">
+            <h4 style="margin:0 0 10px; color:var(--brand);">Compliance Checklist Snapshot</h4>
+            <div class="check done"><span class="dot"></span><span>MTC matches ordered material grade and heat number.</span></div>
+            <div class="check done"><span class="dot"></span><span>Inspection report attached with reference to order line item.</span></div>
+            <div class="check"><span class="dot"></span><span>Third-party witness record pending for pressure test package.</span></div>
+            <div class="check done"><span class="dot"></span><span>Document revision status validated against latest supplier submission.</span></div>
+            <div class="check"><span class="dot"></span><span>Customer-specific transmittal format check awaiting approval.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="roles">
+        <h3 class="title">User Roles</h3>
+        <div class="grid-2">
+          <div class="card"><h4>QA/QC Team</h4><p>Validates technical documentation quality, standards conformity, and release readiness.</p></div>
+          <div class="card"><h4>Procurement</h4><p>Coordinates supplier submissions and remediates missing compliance documents.</p></div>
+          <div class="card"><h4>Sales Support</h4><p>Prepares customer-facing document packs and responds to project documentation requests.</p></div>
+          <div class="card"><h4>Project Coordinator</h4><p>Tracks documentation milestones aligned to delivery and project acceptance schedules.</p></div>
+          <div class="card"><h4>Management</h4><p>Monitors compliance risk, supplier behavior, and audit readiness across branches.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="value">
+        <h3 class="title">Business Value</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Faster document turnaround</h4><p>Cuts lead time between shipment readiness and customer documentation release.</p></div>
+          <div class="card"><h4>Better customer trust</h4><p>Improves confidence through accurate, timely, and complete compliance handovers.</p></div>
+          <div class="card"><h4>Lower manual follow-up</h4><p>Reduces repetitive chasing of vendors and internal teams for missing files.</p></div>
+          <div class="card"><h4>Improved compliance readiness</h4><p>Strengthens preparedness for audits, inspections, and contractual verification.</p></div>
+          <div class="card"><h4>Stronger traceability</h4><p>Enables rapid evidence retrieval across orders, projects, and supplier histories.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="integrations">
+        <h3 class="title">Integration Opportunities</h3>
+        <div class="table-wrap">
+          <table aria-label="Integration matrix">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Purpose</th>
+                <th>Typical Data</th>
+                <th>Value to DocTrace</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ERP</td>
+                <td>Order and material context</td>
+                <td>Order lines, SKU, project refs, supplier links</td>
+                <td>Ensures documentation maps to commercial truth</td>
+              </tr>
+              <tr>
+                <td>Supplier Portal</td>
+                <td>Primary vendor submission channel</td>
+                <td>MTCs, quality certificates, declarations, revisions</td>
+                <td>Improves intake speed and completeness</td>
+              </tr>
+              <tr>
+                <td>Order Management</td>
+                <td>Execution milestone synchronization</td>
+                <td>Dispatch states, project deadlines, line-level statuses</td>
+                <td>Aligns document readiness to delivery workflow</td>
+              </tr>
+              <tr>
+                <td>Customer Portal</td>
+                <td>External document delivery</td>
+                <td>Approved packs, version updates, transmittal history</td>
+                <td>Streamlines customer acceptance processes</td>
+              </tr>
+              <tr>
+                <td>Email Workflows</td>
+                <td>Legacy and fallback intake</td>
+                <td>Attachments, thread metadata, escalation alerts</td>
+                <td>Captures off-system documentation traffic</td>
+              </tr>
+              <tr>
+                <td>Storage / Archive System</td>
+                <td>Retention and legal hold compliance</td>
+                <td>Long-term storage records, policy tags, archive references</td>
+                <td>Supports governance and historical retrieval</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="phases">
+        <h3 class="title">Implementation Phases</h3>
+        <div class="grid-3">
+          <div class="phase">
+            <h4><span class="num">1</span>Phase 1: Document Repository and Tagging</h4>
+            <ul class="list">
+              <li>Launch centralized industrial documentation repository.</li>
+              <li>Enable metadata tagging by order, SKU, supplier, heat, and batch.</li>
+              <li>Establish baseline dashboards for missing and pending records.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <h4><span class="num">2</span>Phase 2: Validation and Approval Workflows</h4>
+            <ul class="list">
+              <li>Implement compliance checklist rules by project and customer type.</li>
+              <li>Configure QA/QC approval routing with SLA and escalation controls.</li>
+              <li>Activate missing-document alerting and supplier follow-up automation.</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <h4><span class="num">3</span>Phase 3: Customer Packs and Compliance Analytics</h4>
+            <ul class="list">
+              <li>Automate customer-ready documentation pack generation.</li>
+              <li>Introduce supplier compliance scoring and audit readiness analytics.</li>
+              <li>Operationalize continuous improvement through compliance trend review.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="architecture">
+        <h3 class="title">Suggested Architecture</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Frontend</h4><p>Role-based interface for QA, operations, procurement, and customer-facing teams.</p></div>
+          <div class="card"><h4>Backend</h4><p>Workflow orchestration for validation rules, approvals, and pack generation.</p></div>
+          <div class="card"><h4>Database</h4><p>Structured metadata store for documents, references, and traceability events.</p></div>
+          <div class="card"><h4>Document Storage</h4><p>Encrypted object storage for source files, versions, and generated packs.</p></div>
+          <div class="card"><h4>OCR / Metadata Extraction</h4><p>Automated extraction of heat numbers, standards, and supplier attributes.</p></div>
+          <div class="card"><h4>Search Index</h4><p>Fast retrieval by material identifiers, project code, and compliance terms.</p></div>
+          <div class="card"><h4>Permissions and Audit Logs</h4><p>Granular access control with immutable activity history for governance.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="fit">
+        <h3 class="title">Why This Is Valuable in Industrial Distribution</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h4>Documentation quality directly influences trust</h4>
+            <p>In industrial PVF supply, the quality and speed of MTC, inspection, and compliance record delivery can materially shape customer confidence and repeat business.</p>
+          </div>
+          <div class="card">
+            <h4>Project closeout speed depends on documentation integrity</h4>
+            <p>Accurate, traceable documentation helps avoid acceptance delays, reduces disputes, and strengthens operational credibility in regulated and project-critical sectors.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="kpi">
+        <h3 class="title">KPI Indicators (Illustrative Sample Outcomes)</h3>
+        <div class="roi">
+          <div class="card">
+            <h4>Faster document retrieval</h4>
+            <p>Improved metadata indexing can reduce search time for technical and compliance records.</p>
+            <span class="label">Illustrative KPI</span>
+          </div>
+          <div class="card">
+            <h4>Fewer missing certificate escalations</h4>
+            <p>Alert-driven controls can reduce last-minute customer and project documentation issues.</p>
+            <span class="label">Illustrative KPI</span>
+          </div>
+          <div class="card">
+            <h4>Improved supplier compliance visibility</h4>
+            <p>Supplier scorecards can improve accountability for quality documentation performance.</p>
+            <span class="label">Illustrative KPI</span>
+          </div>
+          <div class="card">
+            <h4>Reduced project closeout delays</h4>
+            <p>Automated pack readiness can support faster handover and acceptance cycles.</p>
+            <span class="label">Illustrative KPI</span>
+          </div>
+        </div>
+        <p class="small-note">All KPI references are sample outcomes for business case illustration and are not guaranteed claims.</p>
+      </section>
+
+      <section class="section footer" id="footer">
+        <div>
+          <h3 style="margin:0 0 6px;">Confidential Product Concept</h3>
+          <div style="font-size:0.88rem; color:rgba(255,255,255,0.9);">Enterprise quality automation for industrial supply.</div>
+          <div style="font-size:0.84rem; margin-top:6px; color:rgba(255,255,255,0.78);">DocTrace concept prepared by Stryvon.AI.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
